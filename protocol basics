@@ -1,7 +1,19 @@
-start(0)[1] - speler(1-5)[5] - data(6-10)[5] - controle(11-15)[5] 
-      1         0=gl 1-31=p     wapentype of      xors van alles
-                                commands(gl)   1-6, 2-7, 3-8, 4-9, 5-10
+IR protocol
+- A message consists of 16 bits.
+- The first bit that is sended is the MSB
+- The first bit is ALWAYS 1/ high
 
-800 ir en 1600 niks = 0
-1600 ir en 800 niks = 1
-4 ms niks betekent nieuw bericht
+gl = game leader
+
+start(0)[1] - player(1-5)[5] - data(6-10)[5] - control(11-15)[5] 
+      1         0=gl 1-31=p    weapontype or   xors of everything
+                            	 commands(gl)    1-6, 2-7, 3-8, 4-9, 5-10
+
+us = microseconds
+
+800 us ir signal followed up with 1600 us nothing = 0
+1600 us ir signal followed up with 800 us nothing = 1
+
+Every message is send 2 times, with a pause of 3 ms in between.
+
+When received 4ms nothing than we asume the next signal received is a start of a new message
