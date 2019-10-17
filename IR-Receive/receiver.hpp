@@ -3,43 +3,35 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-class messageData : public rtos::task<>{
+class IrReceive : public rtos::task<> {
 private:
-    enum states {IDLE, MESSAGE};
+    enum states {IDLE, RECEIVING, CHECKING};
     states state = IDLE;
-    uint16_t lastmessage = 0x0;
-    rtos::channel<uint16_t, 3> messages;
-
-public:
-    void received( uint16_t message );
-
-    uint8_t returnPlayer();
-
-    uint8_t returnData();
-
-    void storeLoop();
-};
-
-class receiver : public rtos::task<> {
-private:
-    enum states {IDLE, RECEIVE};
-    states state = IDLE;
-    due::pin_in signalPin;
-    messageData& data;
+    due::pin_in sensor;
+    // InputTranslator& translator;
+    bool signal;
     int bitCount = 0;
     int oneTime = 0;
-    uint16_t lastmessage = 0x0;
+    int zeroTime;
+    int endTime;
+    uint16_t lastmessage;
+    uint16_t checkmessage;
+    uint8_t lastxor;
+    uint8_t checkxor;
+    uint8_t player;
+    uint8_t data;
+    uint8_t lastMathxor;
+    uint8_t checkMathxor;
+    
+    void printMessage();
 
 public:
-    receiver( due::pins signal, messageData& data ):
-        signalPin( due::pin_in(signal)),
-        data( data )
+    IrReceive( due::pins sensor, const char * name ):
+        task( name ),
+        sensor( due::pin_in(sensor))
     {};
 
-    void receiveLoop();
-
-    // setmessage for testing without actually receiving a signal
-    void setmessage(uint16_t message);
+    void main();
 
 };
 
