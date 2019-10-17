@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES :=
+SOURCES := senderTask.cpp
 
 # header files in this project
-HEADERS := sender.hpp
+HEADERS := senderTask.hpp customPWM.hpp
 
 # other places to look for files for this project
 SEARCH  := 
