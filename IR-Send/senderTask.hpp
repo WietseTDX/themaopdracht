@@ -25,19 +25,20 @@ class IRSendController : rtos::task<> {
   states state;
   void generateMessage();
 
-
  public:
   void sendMessage(uint8_t player_num, uint8_t data);
-	void repeatSend();
+  void repeatSend();
 
   IRSendController()
       : task("IR-SendController"),
-        ir_led(PinPWMD2<38000,2>()),
+        ir_led(PinPWMD2<38000, 2>()),
         playerPool("playerPool"),
         dataPool("dataPool"),
         newMessageFlag(this, "newMessageFlag"),
-				repeatFlag(this, "repeatFlag"),
-        signalTimer(this, "signalTimer") {}
+        repeatFlag(this, "repeatFlag"),
+        signalTimer(this, "signalTimer") {
+					ir_led.write(0);
+				}
 
   void main() override;
 

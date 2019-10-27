@@ -25,8 +25,8 @@ class testMain : rtos::task<> {
 int main(void) {
   hwlib::wait_ms(500);
   // IR output LED
-	auto but = hwlib::target::pin_in(hwlib::target::pins::d21);
-	auto led = hwlib::target::pin_out(hwlib::target::pins::d14);
+	auto but = hwlib::target::pin_in(hwlib::target::pins::d14);
+	auto led = hwlib::target::pin_out(hwlib::target::pins::d21);
   auto test_send = IRSendController();
   auto gozer = testMain(but, led, test_send);
 

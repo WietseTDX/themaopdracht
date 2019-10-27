@@ -39,7 +39,10 @@ void IRSendController::main() {
     switch (state) {
       case states::WAIT_FOR_FLAG:
         wait(newMessageFlag);
-        generateMessage();
+        // auto wait_trigger = wait(newMessageFlag + repeatFlag);
+        // if (wait_trigger == repeatFlag) {
+          generateMessage();
+        // }
         messageBitPrinter<16, uint16_t>();  // For debugging
         bit_send = 16;
         mess_repeat = 0;
@@ -55,6 +58,8 @@ void IRSendController::main() {
             state = states::WAIT_FOR_FLAG;
           } else {
             bit_send = 16;
+						signalTimer.set(3000);
+						wait(signalTimer);
             state = states::SEND_MESSAGE;
           }
         } else {
