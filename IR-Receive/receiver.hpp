@@ -10,10 +10,19 @@ private:
     due::pin_in sensor;
     // InputTranslator& translator;
     bool signal;
-    int bitCount = 0;
-    int oneTime = 0;
-    int zeroTime;
-    int endTime;
+		bool signal_high = false;
+		bool high_check = false;
+		bool halfway = false;
+		int start_high;
+		int start_low;
+		int resettime;
+    int bitcount = 0;
+    int high_time = 0;
+
+    int first_low_time;
+    int first_high_end;
+
+
     uint16_t lastmessage;
     uint16_t checkmessage;
     uint8_t lastxor;
