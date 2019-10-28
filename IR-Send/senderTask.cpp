@@ -47,6 +47,7 @@ void IRSendController::main() {
         bit_send = 16;
         mess_repeat = 0;
         state = states::SEND_MESSAGE;
+        hwlib::wait_us(100);
         break;
       case states::SEND_MESSAGE:
         bit_send--;
