@@ -3,7 +3,7 @@
 
 class testMain : rtos::task<> {
 private:
-    OLEDController oledcontroller;
+    OLEDController& oledcontroller;
 public:
 
 testMain(OLEDController & oledcontroller):
@@ -11,34 +11,20 @@ testMain(OLEDController & oledcontroller):
 {}
 
 void main() override{
+    int time = 630;
     for(;;){
         hwlib::wait_ms(1000);
-        hwlib::cout << "Ik ga nu updateTime aanroepen\n";
-        oledcontroller.updateTime(0);
+        oledcontroller.updateTime(time);
         hwlib::wait_ms(1000);
-        hwlib::cout << "Ik ga nu updatePlayerNumber aanroepen\n";
-        oledcontroller.updatePlayerNumber(1);
+        oledcontroller.updatePlayerNumber(time%10);
         hwlib::wait_ms(1000);
-        hwlib::cout << "Ik ga ny updateHealth aanroepen\n";
-        oledcontroller.updateHealth(123);
+        oledcontroller.updateHealth(time);
         hwlib::wait_ms(1000);
-        hwlib::cout << "Ik ga nu updateWeapon aanroepen\n";
-        oledcontroller.updateWeapon(0);
+        oledcontroller.updateWeapon(time%100);
+        time--;
     }
-    // for(int i = 1230; i > 0; i--){
-    //     oledcontroller.updateTime(i);
-    //     oledcontroller.updatePlayerNumber(i%10);
-    //     oledcontroller.updateHealth(i%1000);
-    //     hwlib::wait_ms(1000);
-    // }
 }
-
-
 };
-
-
-
-
 
 int main(){
     hwlib::wait_ms(2000);

@@ -94,7 +94,7 @@ void OLEDController::updateHealth(int health_points){
 
 void OLEDController::updatePlayerNumber(int player_number){
     OledPool.write(player_number);
-    updateHealthFlag.set();
+    updatePlayerFlag.set();
 }
 
 void OLEDController::updateWeapon(int weapon){
@@ -108,13 +108,12 @@ void OLEDController::updateWeapon(int weapon){
 
 void OLEDController::main() {
     state = states::WAIT_FOR_CHANGE;
+    oled.clear();
     while(true){
         switch( state ){
             case states::WAIT_FOR_CHANGE:
             {
-                hwlib::cout << "Ik ga nu wachten\n";
                 auto event_flag = wait(updateTimeFlag + updateHealthFlag + updatePlayerFlag + updateWeaponFlag);
-                hwlib::cout << "Ik ben klaar met wachten\n";
                 if(event_flag == updateTimeFlag){
                     state = states::UPDATE_TIME;
                 }else if(event_flag == updateHealthFlag){
@@ -128,23 +127,15 @@ void OLEDController::main() {
             }//case wait for change
             case states::UPDATE_TIME:
             {
-                hwlib::cout << "Begin Update Time\n";
-                timeWindow.clear();
-                int time = OledPool.read();
-                hwlib::cout << "OledPool\n";
-                displayTime << textdisplay[time/600] << textdisplay[time/60%10] << ':' << textdisplay[time%60/10] << textdisplay[time%60%10];
-                hwlib::cout << "display write\n";
+                auto time = OledPool.read();
+                displayTime << "\f" << textdisplay[time/600] << textdisplay[time/60%10] << ':' << textdisplay[time%60/10] << textdisplay[time%60%10];
                 drawBox(timeWindow, 79,16);
-                hwlib::cout << "drawbox is aangeroepen\n";
                 timeWindow.flush();
-                hwlib::cout << "flushen\n";
                 state = states::WAIT_FOR_CHANGE;
-                hwlib::cout << "Einde Update Time\n";
                 break;
             }//case update time
             case states::UPDATE_HEALTH:
             {
-                healthWindow.clear();
                 int health_points = OledPool.read();
                 displayHealth << "\f" << "\t0202" << textdisplay[health_points/100] << textdisplay[health_points%100/10] << textdisplay[health_points%10];
                 for(int i = 0; i < 41; i++){
@@ -158,9 +149,8 @@ void OLEDController::main() {
             }//case update health
             case states::UPDATE_PLAYER_INFORMATION:
             {
-                playerNumberWindow.clear();
                 int player_number = OledPool.read();
-                displayPlayer << "P:" << textdisplay[player_number];
+                displayPlayer << "\f" << "P:" << textdisplay[player_number];
                 drawBox(playerNumberWindow, 46, 16);
                 playerNumberWindow.flush();
                 state = states::WAIT_FOR_CHANGE;
@@ -168,7 +158,6 @@ void OLEDController::main() {
             }//case update player information
             case states::UPDATE_WEAPON:
             {
-                weaponWindow.clear();
                 drawBox(weaponWindow, 62, 44);
                 weaponWindow.flush();
                 state = states::WAIT_FOR_CHANGE;
