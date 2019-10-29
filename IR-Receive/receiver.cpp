@@ -121,7 +121,7 @@ void IrReceive::main() {
           message = (shiftcheck >> 5);
           data = (message & 0x001F);
           cout << "1" << endl;
-          printMessage();
+          // printMessage();
         } else {
           uint16_t shiftcheck = checkmessage;
           uint16_t shiftlast = lastmessage;
