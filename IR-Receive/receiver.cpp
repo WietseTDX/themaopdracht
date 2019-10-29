@@ -30,6 +30,7 @@ void IrReceive::main() {
           signal_high = true;
         } else if (!signal && signal_high) {
           first_high_end = hwlib::now_us();
+					start_low = first_high_end;
           high_time = first_high_end - start_high;
           signal_high = false;
           if (high_time > 300) {
@@ -112,8 +113,6 @@ void IrReceive::main() {
         break;
 
       case CHECKING:
-        cout << "last: " << lastmessage << endl;
-        cout << "check: " << checkmessage << endl;
         if (lastmessage == checkmessage) {
           uint16_t shiftcheck = checkmessage;
           uint8_t message = (shiftcheck >> 10);
