@@ -96,7 +96,7 @@ void IrReceive::main() {
             bitcount++;
           } else {
             resettime = hwlib::now_us() - start_low;
-            if (resettime > 5000) {
+            if (resettime > 4000) {
               cout << "bitcount: " << bitcount << endl;
               cout << "reset: " << resettime << endl;
               first_low_time = 0;
