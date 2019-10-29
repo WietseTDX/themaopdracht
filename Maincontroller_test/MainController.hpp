@@ -1,9 +1,11 @@
 #ifndef _MAIN_CONTROLLER
 #define _MAIN_CONTROLLER
 
-
 #include "hwlib.hpp"
 #include "rtos.hpp"
+#include "IrSend.cpp"
+#include "OLEDController.cpp"
+#include "Playerinformation.cpp"
 
 class Maincontroller : public rtos::task<> {
     private:
@@ -18,7 +20,7 @@ class Maincontroller : public rtos::task<> {
 
     IrSendController send;
     OLEDController display;
-    PlayerInformation player_information;
+    PlayerInformation player_information<100>;
     int time;
     int last_us;
 

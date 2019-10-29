@@ -5,24 +5,24 @@ void main() {
         switch (state) {
             case (WAIT_FOR_START_GAME): {
                 auto event = wait(startGameFlag);
-                state  = WAIT_FOR_SHOT;
+                state  = states::WAIT_FOR_SHOT;
             break:
             } // case (WAIT_FOR_SHOT):
             case (WAIT_FOR_SHOT) : {
                 auto event = wait(UpdateWeaponFlag + UpdatePlayerNumberFlag + TriggerPressedFlag + BeenShotFlag + PeriodFlag);
                 if (event == PeriodFlag && hwlib::now_us() >= last_us += 1000000) {
-                    oled.UpdateTime(--time);
+                    display.UpdateTime(--time);
                     if (time <= 0) {
-                        state = DEAD_WAIT_FOR_PC;
+                        state = states::DEAD_WAIT_FOR_PC;
                     }
                 }
                 if (event == UpdateWeaponFlag) {
                     player_information.setWeapon(commanPool.read());
-                    oled.UpdateWeapon(player_information.getWeapon());
+                    display.UpdateWeapon(player_information.getWeapon());
                 }
                 if (event == UpdatePlayerNumberFlag) {
                     player_information.setPlayerNumber(commandPool.read());
-                    oled.UpdatePlayerNumber(player_information.getPlayerNumber());
+                    display.UpdatePlayerNumber(player_information.getPlayerNumber());
                 }
                 if (event == triggerPressedFlag) {
                     IrSend.sendMessage(player_information.getPlayerNumber(), player_information.getWeapon());
@@ -32,11 +32,11 @@ void main() {
                     int health = player_information.getHealth();
                     if (health <= damage) {
                         player_information.setHealth(0);
-                        oled.UpdateHealth(0);
-                        state = DEAD_WAIT_FOR_PC;
+                        display.UpdateHealth(0);
+                        state = states::DEAD_WAIT_FOR_PC;
                     } else {
                         player_information.setHealth(health - damage);
-                        oled.Updatehealth(health - damage);
+                        display.Updatehealth(health - damage);
                     }
                 }
             break;
@@ -47,7 +47,7 @@ void main() {
                 // DEZE STAAT MOET NOG GEMODDELEERD       //
                 //========================================//
                 hwlib::cout << "DEAD_WAIT_FOR_PC" << endl;
-                state = WAIT_FOR_START_GAME;
+                state = states::WAIT_FOR_START_GAME;
             break;    
             } // case (DEAD_WAIT_FOR_PC)
         } // switch (state)
