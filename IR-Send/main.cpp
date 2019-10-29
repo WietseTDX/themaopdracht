@@ -19,6 +19,13 @@ class testMain : rtos::task<> {
       }
 			hwlib::wait_ms(100);
     }
+		for(;;){
+			red_led.write(1);
+			sender.sendMessage(1,1);
+			hwlib::wait_ms(5);
+			red_led.write(0);
+			hwlib::wait_ms(5);
+		}
   }
 };
 
