@@ -25,30 +25,30 @@ void IRSendController::generateMessage() {
 // Public functions IRSendController
 //====================================
 void IRSendController::sendMessage(uint8_t player_num, uint8_t data) {
-  // cout << "gozer ik ben in sendMessage" << endl;
   playerPool.write(player_num);
   dataPool.write(data);
   newMessageFlag.set();
 }
 
-void IRSendController::repeatSend() { repeatFlag.set(); }
+void IRSendController::repeatSend() { repeatFlag.set();}
 
 void IRSendController::main() {
   state = states::WAIT_FOR_FLAG;
   for (;;) {
     switch (state) {
-      case states::WAIT_FOR_FLAG:
-        wait(newMessageFlag);
-        // auto wait_trigger = wait(newMessageFlag + repeatFlag);
-        // if (wait_trigger == repeatFlag) {
+      case states::WAIT_FOR_FLAG: {
+        auto wait_trigger = wait(newMessageFlag + repeatFlag);
+        if (wait_trigger == newMessageFlag) {
+					cout << "GENERATE" << endl;
           generateMessage();
-        // }
-        // messageBitPrinter<16, uint16_t>();  // For debugging
+          messageBitPrinter<16, uint16_t>();  // For debugging
+        }
         bit_send = 16;
         mess_repeat = 0;
         state = states::SEND_MESSAGE;
         hwlib::wait_us(100);
         break;
+      }
       case states::SEND_MESSAGE:
         bit_send--;
         mask = 0x0001 << bit_send;
@@ -59,8 +59,8 @@ void IRSendController::main() {
             state = states::WAIT_FOR_FLAG;
           } else {
             bit_send = 16;
-						signalTimer.set(3000);
-						wait(signalTimer);
+            signalTimer.set(3000);
+            wait(signalTimer);
             state = states::SEND_MESSAGE;
           }
         } else {
