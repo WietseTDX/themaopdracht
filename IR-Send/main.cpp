@@ -9,16 +9,16 @@ class testMain : rtos::task<> {
  public:
   testMain(hwlib::pin_in& b, hwlib::pin_out& l, IRSendController& s) : but(b), red_led(l), sender(s) {}
   void main() {
-    for (;;) {
-      but.refresh();
-      if (!but.read()) {
-        red_led.write(1);
-        sender.sendMessage(20, 1);
-      } else {
-        red_led.write(0);
-      }
-			hwlib::wait_ms(100);
-    }
+    // for (;;) {
+    //   but.refresh();
+    //   if (!but.read()) {
+    //     red_led.write(1);
+    //     sender.sendMessage(20, 1);
+    //   } else {
+    //     red_led.write(0);
+    //   }
+		// 	hwlib::wait_ms(100);
+    // }
 		for(;;){
 			red_led.write(1);
 			sender.sendMessage(1,1);

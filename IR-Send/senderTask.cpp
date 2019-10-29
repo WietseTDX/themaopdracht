@@ -6,7 +6,7 @@
 void IRSendController::generateMessage() {
   uint8_t player = playerPool.read();
   uint8_t data = dataPool.read();
-  cout << "Player | Data: " << player << " | " << data << endl;
+  // cout << "Player | Data: " << player << " | " << data << endl;
   if (player > 31) {
     cout << "ERROR : generateMessage\nPlayer number is too big" << endl;
     return;
@@ -25,7 +25,7 @@ void IRSendController::generateMessage() {
 // Public functions IRSendController
 //====================================
 void IRSendController::sendMessage(uint8_t player_num, uint8_t data) {
-  cout << "gozer ik ben in sendMessage" << endl;
+  // cout << "gozer ik ben in sendMessage" << endl;
   playerPool.write(player_num);
   dataPool.write(data);
   newMessageFlag.set();
@@ -43,7 +43,7 @@ void IRSendController::main() {
         // if (wait_trigger == repeatFlag) {
           generateMessage();
         // }
-        messageBitPrinter<16, uint16_t>();  // For debugging
+        // messageBitPrinter<16, uint16_t>();  // For debugging
         bit_send = 16;
         mess_repeat = 0;
         state = states::SEND_MESSAGE;
