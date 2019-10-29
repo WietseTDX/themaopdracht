@@ -1,52 +1,52 @@
 #include "MainController.hpp"
 
-void main() {
+void MainController::main() {
     while (true) {
         switch (state) {
-            case (WAIT_FOR_START_GAME): {
-                auto event = wait(startGameFlag);
+            case (states::WAIT_FOR_START_GAME): {
+                auto event = wait(StartGameFlag);
                 state  = states::WAIT_FOR_SHOT;
-            break:
+            break;
             } // case (WAIT_FOR_SHOT):
-            case (WAIT_FOR_SHOT) : {
+            case (states::WAIT_FOR_SHOT) : {
                 auto event = wait(UpdateWeaponFlag + UpdatePlayerNumberFlag + TriggerPressedFlag + BeenShotFlag + PeriodFlag);
-                if (event == PeriodFlag && hwlib::now_us() >= last_us += 1000000) {
+                if (event == PeriodFlag && hwlib::now_us() >= (last_us += 1000000)) {
                     display.UpdateTime(--time);
                     if (time <= 0) {
                         state = states::DEAD_WAIT_FOR_PC;
                     }
                 }
                 if (event == UpdateWeaponFlag) {
-                    player_information.setWeapon(commanPool.read());
+                    player_information.setWeapon(CommandPool.read());
                     display.UpdateWeapon(player_information.getWeapon());
                 }
                 if (event == UpdatePlayerNumberFlag) {
-                    player_information.setPlayerNumber(commandPool.read());
+                    player_information.setPlayerNumber(CommandPool.read());
                     display.UpdatePlayerNumber(player_information.getPlayerNumber());
                 }
-                if (event == triggerPressedFlag) {
+                if (event == TriggerPressedFlag) {
                     IrSend.sendMessage(player_information.getPlayerNumber(), player_information.getWeapon());
                 }
                 if (event == BeenShotFlag) {
                     int damage = calculateDamage(ReceiveDataPool.read());
-                    int health = player_information.getHealth();
+                    int health = player_information.getHealthPoints();
                     if (health <= damage) {
-                        player_information.setHealth(0);
+                        player_information.setHealthPoints(0);
                         display.UpdateHealth(0);
                         state = states::DEAD_WAIT_FOR_PC;
                     } else {
-                        player_information.setHealth(health - damage);
-                        display.Updatehealth(health - damage);
+                        player_information.setHealthPoints(health - damage);
+                        display.UpdateHealth(health - damage);
                     }
                 }
             break;
             } // case (WAIT_FOR_SHOT)
-            case (DEAD_WAIT_FOR_PC): {
+            case (states::DEAD_WAIT_FOR_PC): {
                 //========================================//
                 // TODO                                   //
                 // DEZE STAAT MOET NOG GEMODDELEERD       //
                 //========================================//
-                hwlib::cout << "DEAD_WAIT_FOR_PC" << endl;
+                hwlib::cout << "DEAD_WAIT_FOR_PC" << hwlib::endl;
                 state = states::WAIT_FOR_START_GAME;
             break;    
             } // case (DEAD_WAIT_FOR_PC)
@@ -55,27 +55,27 @@ void main() {
 } // void main()
 
 
-void triggerPressed(ShootTrigger t) {
-    triggerPressed.write(t);
-    triggerPressedFlag.set();
+void MainController::triggerPressed(ShootTrigger t) {
+    TriggerIDPool.write(t);
+    TriggerPressedFlag.set();
 }
-void beenShot(int damage, int player_number) {
-    RecieveDataPool.write(damage);
+void MainController::beenShot(int damage, int player_number) {
+    ReceiveDataPool.write(damage);
     ReceiverPlayerPool.write(player_number);
-    beenShotFlag.set();
+    BeenShotFlag.set();
 }
-void changeWeapon(int weapon) {
+void MainController::changeWeapon(int weapon) {
     CommandPool.write(weapon);
     UpdateWeaponFlag.set();
 }
-void changePlayerNumber(int player_number) {
-    CommandPool.wirte(player_number);
+void MainController::changePlayerNumber(int player_number) {
+    CommandPool.write(player_number);
     UpdatePlayerNumberFlag.set();
 }
-void startGame() {
+void MainController::startGame() {
     StartGameFlag.set();
 }
-void updateTime(int time) {
+void MainController::updateTime(int time) {
     UpdateTimeFlag.set();
     CommandPool.write(time);
 }

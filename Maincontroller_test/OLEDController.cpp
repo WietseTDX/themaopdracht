@@ -10,16 +10,16 @@ class OLEDController : public rtos::task<> {
         hwlib::cout << "Update time, time: " << time << hwlib::endl;
     }
 
-    UpdateWeapon(int weapon) {
+    void UpdateWeapon(int weapon) {
         hwlib::cout << "UpdateWeapon, weapon: " << weapon << hwlib::endl;
     }
 
-    UpdatePlayerNumber(int player) {
+    void UpdatePlayerNumber(int player) {
         hwlib::cout << "update player number, player: " << player << hwlib::endl;
     }
 
-    UpdateHealth(int health) {
+    void UpdateHealth(int health) {
         hwlib::cout << "update health, health: " << health << hwlib::endl;
     }
 
-}
+};

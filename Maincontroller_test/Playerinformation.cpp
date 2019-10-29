@@ -13,31 +13,31 @@ private:
     std::array<std::array<uint8_t, 2>, N> hits;
     uint8_t index_array = 0;
 public:
-    void PlayerInformation::setWeapon(uint8_t i){
+    void setWeapon(uint8_t i){
         weapon = i;
         hwlib::cout << "setWeapon " << i << hwlib::endl;
     }
-    uint8_t PlayerInformation::getWeapon(){
+    uint8_t getWeapon(){
         hwlib::cout << "getWeapon" << hwlib::endl;
         return weapon;
     }
-    void PlayerInformation::setHealthPoints(uint16_t i){
+    void setHealthPoints(uint16_t i){
         health_points = i;
         hwlib::cout << "setHealthPoints " << i << hwlib::endl;
     }
-    uint16_t PlayerInformation::getHealthPoints(){
+    uint16_t getHealthPoints(){
         hwlib::cout << "getHealthPoints" << hwlib::endl;
         return health_points;
     }
-    void PlayerInformation::setPlayerNumber(uint8_t i){
+    void setPlayerNumber(uint8_t i){
         player_number = i;
         hwlib::cout << "setPlayernumber " << i << hwlib::endl;
     }
-    uint8_t PlayerInformation::getPlayerNumber(){
+    uint8_t getPlayerNumber(){
         hwlib::cout << "Get playerNumber" << hwlib::endl;
         return player_number;
     }
-    void PlayerInformation::addHit(uint8_t player_number, uint8_t damage){
+    void addHit(uint8_t player_number, uint8_t damage){
         if(index_array == 99){hwlib::cout << "ERROR: PlayerInformation.addHit(): Out of bounce!\n";return;}
         std::array<uint8_t, 2> array = {player_number, damage};
         hits[index_array] = array;

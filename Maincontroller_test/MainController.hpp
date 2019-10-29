@@ -6,23 +6,34 @@
 #include "IrSend.cpp"
 #include "OLEDController.cpp"
 #include "Playerinformation.cpp"
+#include "ShootTrigger.cpp"
 
-class Maincontroller : public rtos::task<> {
+int calculateDamage(int a) {
+    return a;
+}
+
+class MainController : public rtos::task<> {
     private:
     rtos::flag UpdateWeaponFlag;
     rtos::flag UpdatePlayerNumberFlag;
     rtos::flag StartGameFlag;
     rtos::flag BeenShotFlag;
     rtos::flag TriggerPressedFlag;
+    rtos::flag UpdateTimeFlag;
+
+    // dit moet een periode flag zijn
+    rtos::flag PeriodFlag;
 
     rtos::pool<int> CommandPool;
+    rtos::pool<int> ReceiveDataPool;
+    rtos::pool<int> ReceiverPlayerPool;
     rtos::pool<ShootTrigger> TriggerIDPool;
 
-    IrSendController send;
+    IrSendController IrSend;
     OLEDController display;
-    PlayerInformation player_information<100>;
+    PlayerInformation<100> player_information;
     int time;
-    int last_us;
+    uint64_t last_us;
 
     enum class states {WAIT_FOR_SHOT, WAIT_FOR_START_GAME, DEAD_WAIT_FOR_PC};
     states state = states::WAIT_FOR_SHOT;
