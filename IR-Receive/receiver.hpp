@@ -16,8 +16,14 @@ private:
 		int start_high;
 		int start_low;
 		int resettime;
+    int offset = 175;
+    int one_high_time = 1600;
+    int zero_high_time = 800;
     int bitcount = 0;
     int high_time = 0;
+
+    //test variable
+    int messages_received = 0;
 
     int first_low_time;
     int first_high_end;

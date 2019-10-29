@@ -65,7 +65,7 @@ void IrReceive::main() {
           start_high = hwlib::now_us();
           if (bitcount == 0) {
             first_low_time = hwlib::now_us() - first_high_end;
-            if (first_low_time > 700 && first_low_time < 900) {
+            if (first_low_time > 700 && first_low_time < zero_high_time + offset) {
               lastmessage |= 1;
               bitcount++;
             } else {
@@ -81,9 +81,9 @@ void IrReceive::main() {
           if (signal_high) {
             start_low = hwlib::now_us();
             high_time = start_low - start_high;
-            if (high_time > 700 && high_time < 900) {
+            if (high_time > 700 && high_time < zero_high_time + offset) {
               lastmessage = (lastmessage << 1);
-            } else if (high_time > 1500 && high_time < 1700) {
+            } else if (high_time > 1500 && high_time < one_high_time + offset) {
               lastmessage = (lastmessage << 1);
               lastmessage |= 1;
             } else {
@@ -94,12 +94,11 @@ void IrReceive::main() {
             }
             signal_high = false;
             bitcount++;
-          }
-
-          else {
+          } else {
             resettime = hwlib::now_us() - start_low;
-            if (resettime >= 4000) {
-              cout << "reset";
+            if (resettime > 5000) {
+              cout << "bitcount: " << bitcount << endl;
+              cout << "reset: " << resettime << endl;
               first_low_time = 0;
               high_time = 0;
               bitcount = 0;
@@ -120,8 +119,8 @@ void IrReceive::main() {
           shiftcheck = checkmessage;
           message = (shiftcheck >> 5);
           data = (message & 0x001F);
-          cout << "1" << endl;
           // printMessage();
+          cout << "1" << endl;
         } else {
           uint16_t shiftcheck = checkmessage;
           uint16_t shiftlast = lastmessage;
@@ -144,8 +143,8 @@ void IrReceive::main() {
           lastxor = (lastmessage & 0x001F);
           checkxor = (checkmessage & 0x001F);
           if (lastMathxor == checkMathxor) {
+            // printMessage();
             cout << "2" << endl;
-            printMessage();
           } else {
             if (lastxor == lastMathxor) {
               shiftlast = lastmessage;
@@ -168,7 +167,7 @@ void IrReceive::main() {
               break;
             }
             cout << "3" << endl;
-            printMessage();
+            // printMessage();
           }
         }
         high_time = 0;
