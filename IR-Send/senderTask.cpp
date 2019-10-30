@@ -30,7 +30,7 @@ void IRSendController::sendMessage(uint8_t player_num, uint8_t data) {
   newMessageFlag.set();
 }
 
-void IRSendController::repeatSend() { repeatFlag.set();}
+void IRSendController::repeatSend() { repeatFlag.set(); }
 
 void IRSendController::main() {
   state = states::WAIT_FOR_FLAG;
@@ -39,7 +39,7 @@ void IRSendController::main() {
       case states::WAIT_FOR_FLAG: {
         auto wait_trigger = wait(newMessageFlag + repeatFlag);
         if (wait_trigger == newMessageFlag) {
-					cout << "GENERATE" << endl;
+          cout << "GENERATE" << endl;
           generateMessage();
           messageBitPrinter<16, uint16_t>();  // For debugging
         }
@@ -63,7 +63,7 @@ void IRSendController::main() {
             wait(signalTimer);
             state = states::SEND_MESSAGE;
           }
-        } else {
+        } else if (bit_send >= 0) {
           if (bit) {
             state = states::BIT_1_HIGH;
           } else {
