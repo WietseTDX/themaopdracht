@@ -1,81 +1,70 @@
-#include "MainController.hpp"
+#include "Maincontroller.hpp"
 
-void main() {
-    while (true) {
-        switch (state) {
-            case (WAIT_FOR_START_GAME): {
-                auto event = wait(startGameFlag);
-                state  = WAIT_FOR_SHOT;
-            break:
-            } // case (WAIT_FOR_SHOT):
-            case (WAIT_FOR_SHOT) : {
-                auto event = wait(UpdateWeaponFlag + UpdatePlayerNumberFlag + TriggerPressedFlag + BeenShotFlag + PeriodFlag);
-                if (event == PeriodFlag && hwlib::now_us() >= last_us += 1000000) {
-                    oled.UpdateTime(--time);
-                    if (time <= 0) {
-                        state = DEAD_WAIT_FOR_PC;
-                    }
-                }
-                if (event == UpdateWeaponFlag) {
-                    player_information.setWeapon(commanPool.read());
-                    oled.UpdateWeapon(player_information.getWeapon());
-                }
-                if (event == UpdatePlayerNumberFlag) {
-                    player_information.setPlayerNumber(commandPool.read());
-                    oled.UpdatePlayerNumber(player_information.getPlayerNumber());
-                }
-                if (event == triggerPressedFlag) {
-                    IrSend.sendMessage(player_information.getPlayerNumber(), player_information.getWeapon());
-                }
-                if (event == BeenShotFlag) {
-                    int damage = calculateDamage(ReceiveDataPool.read());
-                    int health = player_information.getHealth();
-                    if (health <= damage) {
-                        player_information.setHealth(0);
-                        oled.UpdateHealth(0);
-                        state = DEAD_WAIT_FOR_PC;
-                    } else {
-                        player_information.setHealth(health - damage);
-                        oled.Updatehealth(health - damage);
-                    }
-                }
-            break;
-            } // case (WAIT_FOR_SHOT)
-            case (DEAD_WAIT_FOR_PC): {
-                //========================================//
-                // TODO                                   //
-                // DEZE STAAT MOET NOG GEMODDELEERD       //
-                //========================================//
-                hwlib::cout << "DEAD_WAIT_FOR_PC" << endl;
-                state = WAIT_FOR_START_GAME;
-            break;    
-            } // case (DEAD_WAIT_FOR_PC)
-        } // switch (state)
-    } // while (true)
-} // void main()
+void MainController::main() {
+  while (true) {
+    switch (state) {
+      case (states::WAIT_FOR_COMMAND) : {
+        auto event = wait(PeriodeFlag + CommandChannel);
+        if (event == PeriodeFlag) {
+					if (hwlib::now_us() >= last_us + 1000000) {
+						last_us += 1000000;
+						CommandData Time = CommandData(0, last_us/1000000);
+						oled.update(Time);
+						if (time <= 0) {
+							state = states::WAIT_FOR_PC;
+						}
+					}
+					if (event == CommandChannel) {
+						command = CommandChannel.read();
+						runCommand(commnad);
+					}
+      	}
+    	}
+			case (states::WAIT_FOR_PC): {
+				if (time <= 0) {
+					hwlib::cin >> keyboard;
+					if (keyboard == 111) {
+						hwlib::cout << player_information;
+						state = states::WAIT_FOR_START_GAME;
+					}
+				}
+			}
+			case (states::WAIT_FOR_START_GAME): {
+				auto event = wait(CommandChannel);
+				if (CommandChannel.read().type == 4) {
+					state = states::WAIT_FOR_COMMAND;
+				}
+			}
+  	}
+	}
+}
 
+void MainController::buttonPressed(Button b) {
+	ButtonIDPool.write(b);
+	ButtonPressedFlag.set();
+}
 
-void triggerPressed(ShootTrigger t) {
-    triggerPressed.write(t);
-    triggerPressedFlag.set();
+void MainController::translateCommand(CommandData data) {
+	CommandChannel.write(data);
 }
-void beenShot(int damage, int player_number) {
-    RecieveDataPool.write(damage);
-    ReceiverPlayerPool.write(player_number);
-    beenShotFlag.set();
-}
-void changeWeapon(int weapon) {
-    CommandPool.write(weapon);
-    UpdateWeaponFlag.set();
-}
-void changePlayerNumber(int player_number) {
-    CommandPool.wirte(player_number);
-    UpdatePlayerNumberFlag.set();
-}
-void startGame() {
-    StartGameFlag.set();
-}
-void updateTime(int time) {
-    UpdateTimeFlag.set();
-    CommandPool.write(time);
+
+void MainController::runCommand(CommandData command) {
+	if (command.type == 1){//change player number
+		player_information.setPlayerNumber(command.data);
+		oled.update(command);
+	} else if (CommandData.type == 2) { //change health
+		int weapon = command.data && 0x31;
+		int player = command.data && 0x31 << 5;
+		addHit(player, weapon);
+		int damage = calculateDamage(weapon);
+		int health = player_information.getHealth();
+		health -= damage;
+		if (health <= 0) {health = 0;}
+		player_information.setHealth(health);
+		command.data = health;
+		oled.update(command);
+	} else if (command.type == 3) { //change weapon
+		player_information.setWeapon(command.data);
+		oled.update(command);
+	}
 }
