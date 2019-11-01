@@ -1,10 +1,10 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-template<int count_button>
+
 class ButthonHandeler : public rtos::task<> {
   KeyboardControl &keyboard;
-  Button *button[count_button];
+  Button *button[1];
   int place = 0;
 
   public:
