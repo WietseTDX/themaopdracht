@@ -33,7 +33,7 @@ void MainController::main() {
 				}
 				if (event == buttonPressedFlag) {
 					if (ButtonIDPool.read() == buttons::shoot_trigger && (!shot)) {
-						IrSend.sendMessage(Info.getPlayerNumber(), Info.getWeapon());
+						IrSend.sendMessage(info.getPlayerNumber(), info.getWeapon());
 						shot = true;
 						ShotTimer.set(timeWaitShot());
 						Buzzer.write(1);
@@ -46,14 +46,14 @@ void MainController::main() {
 				if (event == CommandChannel) {
 					command = CommandChannel.read();
 					runCommand(command);
-					if (Info.getHealthPoints() <= 0) {
+					if (info.getHealthPoints() <= 0) {
 						state == states::WAIT_FOR_PC;
 					}
 				}
 				if (event == PeriodFlag) {
-					Info.setTime(Info.getTime() - 1);
+					info.setTime(info.getTime() - 1);
 					Window.update(0);
-					if (Info.getTime <= 0) {
+					if (info.getTime <= 0) {
 						state = states::WAIT_FOR_PC;
 					}
 				}
@@ -62,7 +62,7 @@ void MainController::main() {
 			case (states::WAIT_FOR_PC) : {
 				hwlib::cin >> keyboard;
 				if (keybaord == 111) {
-					hwlib::cout << Info;
+					hwlib::cout << info;
 					state = states::WAIT_FOR_START;
 				}
 			break;

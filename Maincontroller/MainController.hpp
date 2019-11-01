@@ -10,7 +10,7 @@ struct StructData {
 class MainController : public rtos::task<> {
 	rtos::flag ButtonPressedFlag;
 	rtos::pool<int> ButtonIDPool;
-	rtos::channel<3, StructData> CommandChannel; //5 Omdat de Receiver kan elke 40 ms een bericht ontvangen en je kan niet sneller dan 10x per seconde een kopje indrukken en van de keyboard controller krijgt die een bericht per seconde omdat sneller wel heel lastig is. De main heeft een deadline van 50 ms neem ik aan dat voor de 40 ms van de receiver neemt 2 plekken in en de button een halve plek dat kan niet dus 1 en voor de keyborad ook 1 dus 3 plekken
+	rtos::channel<4, StructData> CommandChannel; //4 Omdat de Receiver kan elke 40 ms een bericht ontvangen en je kan niet sneller dan 10x per seconde een kopje indrukken en van de keyboard controller krijgt die een bericht per seconde omdat sneller wel heel lastig is. De main heeft een deadline van 50 ms neem ik aan dat voor de 40 ms van de receiver neemt 2 plekken in en de button een halve plek dat kan niet dus 1 en voor de keyborad ook 1, 1tje er bij voor de veiligheid dus 4 plekken
 	rtos::timer ShotTimer;
 	rtos::timer BeenShotTimer;
 	rtos::timer BuzzerTimer
@@ -19,8 +19,8 @@ class MainController : public rtos::task<> {
 
 	hwlib::due::pin_out(hwlib::due::pins::d5) buzzer;
 	IrSendController IrSend;
-	PlayerInformation<100> Info;
-	WindowController Window(w, Info);
+	PlayerInformation<100> info;
+	WindowController Window(w, info);
 	Button button;
 	int count_down;
 	int keyboard;
