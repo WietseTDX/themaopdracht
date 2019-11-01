@@ -2,12 +2,14 @@
 #include "rtos.hpp"
 
 
-class ButthonHandeler : public rtos::task<> {
+class ButtonHandeler : public rtos::task<> {
   KeyboardControl &keyboard;
-  Button *button[1];
+  Button *button[];
+  rtos::clock PeriodFlag;
   int place = 0;
 
   public:
+  ButthonHandeler();
   void main() override;
   void addButton(Button *object);
 }
