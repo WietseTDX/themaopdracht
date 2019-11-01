@@ -13,7 +13,8 @@ class MainController : public rtos::task<> {
 	rtos::channel<4, StructData> CommandChannel; //4 Omdat de Receiver kan elke 40 ms een bericht ontvangen en je kan niet sneller dan 10x per seconde een kopje indrukken en van de keyboard controller krijgt die een bericht per seconde omdat sneller wel heel lastig is. De main heeft een deadline van 50 ms neem ik aan dat voor de 40 ms van de receiver neemt 2 plekken in en de button een halve plek dat kan niet dus 1 en voor de keyborad ook 1, 1tje er bij voor de veiligheid dus 4 plekken
 	rtos::timer ShotTimer;
 	rtos::timer BeenShotTimer;
-	rtos::timer BuzzerTimer
+	rtos::timer BuzzerTimer;
+	rtos::clock PeriodFlag;
 
 	hwlib::window w;
 
