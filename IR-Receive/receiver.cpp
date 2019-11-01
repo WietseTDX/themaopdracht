@@ -2,19 +2,67 @@
 using hwlib::cout;
 using hwlib::endl;
 //==================================
-// Private functions "IrReceive"
+// Private functions "IrReceiveController"
 //==================================
 
-void IrReceive::printMessage() {
-  cout << "player: " << player << endl;
-  cout << "data: " << data << endl;
+void IrReceiveController::sendCommand() {
+  uint16_t to_send = 0x0;
+  to_send |= (player << 5);
+  to_send |= data;
+  // dataStruct.data = to_send;
+  // main_c.translateCmd(dataStruct);
+  cout << to_send << endl;
+};
+
+void IrReceiveController::messageDecode(uint16_t &to_decode) {
+  uint8_t message = (to_decode >> 5);
+  data = (message & 0x001F);
+  message = (message >> 5);
+  player = (message & 0x001F);
+}
+
+void IrReceiveController::checkingMessage() {
+  if (lastmessage == checkmessage) {
+    uint16_t shiftcheck = checkmessage;
+    messageDecode(shiftcheck); // set data and player using the message given in the parameter
+    sendCommand();
+    cout << "1" << endl;
+  } else {
+    uint16_t shiftcheck = checkmessage;
+    uint16_t shiftlast = lastmessage;
+
+    messageDecode(shiftcheck);
+    checkMathxor = (data ^ player);
+
+    messageDecode(shiftlast);
+    lastMathxor = (data ^ player);
+
+    lastxor = (lastmessage & 0x001F);
+    checkxor = (checkmessage & 0x001F);
+    if (lastMathxor == checkMathxor) {
+      sendCommand();
+      cout << "2" << endl;
+    } else {
+      if (lastxor == lastMathxor) {
+        shiftlast = lastmessage;
+        messageDecode(shiftlast);
+        sendCommand();
+        cout << "3" << endl;
+      } else if (checkxor == checkMathxor) {
+        shiftcheck = checkmessage;
+        messageDecode(shiftcheck);
+        sendCommand();
+        cout << "3" << endl;
+      }
+    }
+  }      
 };
 
 //==================================
-// Public funtions "IrReceive"
+// Public funtions "IrReceiveController"
 //==================================
 
-void IrReceive::main() {
+void IrReceiveController::main() {
   state = states::IDLE;
   hwlib::wait_ms(100);
   cout << "START" << endl;
@@ -57,7 +105,10 @@ void IrReceive::main() {
           hwlib::wait_us(3'000);
         }
         if (bitcount == 32) {
-          state = states::CHECKING;
+          checkingMessage();
+          high_time = 0;
+          signal_high = false;
+          state = states::IDLE;
           break;
         }
 
@@ -97,83 +148,14 @@ void IrReceive::main() {
           } else {
             resettime = hwlib::now_us() - start_low;
             if (resettime > 4000) {
-              cout << "bitcount: " << bitcount << endl;
-              cout << "reset: " << resettime << endl;
-              first_low_time = 0;
-              high_time = 0;
-              bitcount = 0;
-              signal_high = false;
-              resettime = 0;
-              state = states::IDLE;
-              break;
-            }
-          }
-        }
-        break;
-
-      case CHECKING:
-        if (lastmessage == checkmessage) {
-          uint16_t shiftcheck = checkmessage;
-          uint8_t message = (shiftcheck >> 10);
-          player = (message & 0x001F);
-          shiftcheck = checkmessage;
-          message = (shiftcheck >> 5);
-          data = (message & 0x001F);
-          // printMessage();
-          cout << "1" << endl;
-        } else {
-          uint16_t shiftcheck = checkmessage;
-          uint16_t shiftlast = lastmessage;
-
-          uint8_t message = (shiftcheck >> 10);
-          player = (message & 0x001F);
-          shiftcheck = checkmessage;
-          message = (shiftcheck >> 5);
-          data = (message & 0x001F);
-          checkMathxor = (data ^ player);
-
-          message = (shiftlast >> 10);
-          player = (message & 0x001F);
-          shiftlast = lastmessage;
-          message = (shiftlast >> 5);
-          data = (message & 0x001F);
-
-          lastMathxor = (data ^ player);
-
-          lastxor = (lastmessage & 0x001F);
-          checkxor = (checkmessage & 0x001F);
-          if (lastMathxor == checkMathxor) {
-            // printMessage();
-            cout << "2" << endl;
-          } else {
-            if (lastxor == lastMathxor) {
-              shiftlast = lastmessage;
-              message = (shiftlast >> 10);
-              player = (message & 0x001F);
-              shiftlast = lastmessage;
-              message = (shiftlast >> 5);
-              data = (message & 0x001F);
-            } else if (checkxor == checkMathxor) {
-              shiftcheck = checkmessage;
-              message = (shiftcheck >> 10);
-              player = (message & 0x001F);
-              shiftcheck = checkmessage;
-              message = (shiftcheck >> 5);
-              data = (message & 0x001F);
-            } else {
               high_time = 0;
               signal_high = false;
               state = states::IDLE;
               break;
             }
-            cout << "3" << endl;
-            // printMessage();
           }
         }
-        high_time = 0;
-        signal_high = false;
-        state = states::IDLE;
-        break;
+        break;        
     }
   };
 };
