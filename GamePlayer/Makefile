@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := OLEDController.cpp
+SOURCES := WindowController.cpp
 
 # header files in this project
-HEADERS := OLEDController.hpp
+HEADERS := WindowController.hpp PlayerInformation.hpp
 
 # other places to look for files for this project
 SEARCH  := 
