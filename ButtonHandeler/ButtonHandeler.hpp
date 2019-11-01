@@ -3,7 +3,7 @@
 
 template<int count_button>
 class ButthonHandeler : public rtos::task<> {
-  KeyboardControl &Keyboard;
+  KeyboardControl &keyboard;
   Button *button[count_button];
   int place = 0;
 
