@@ -11,7 +11,7 @@ void ButtonHandeler::main() {
 }
 
 
-void ButtonHandeler::addButton(Button& object) {
+void ButtonHandeler::addButton(Button *object) {
   button[place] = object;
   place++;
 }

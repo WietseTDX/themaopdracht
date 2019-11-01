@@ -9,5 +9,5 @@ class ButthonHandeler : public rtos::task<> {
 
   public:
   void main() override;
-  void addButton(Button button);
+  void addButton(Button *object);
 }
