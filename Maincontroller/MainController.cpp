@@ -2,7 +2,7 @@
 
 MainController::MainController(InputHandeler& handeler) 
 : task("MainController"), ButtonPressedFlag(this, "ButtonPressedFlag"), ButtonIDPool("ButtonIDPool"), CommandChannel("CommandChannel"), ShotTimer(this, "ShotTimer"), BeenShotTimer(this, "BeenShotTimer"), BuzzerTimer(this, "BuzzerTimer"), PeriodFlag(this, 1000000, "PeriodFlag"){
-	handeler.addButton(button);
+	handeler.addButton(&button);
 }
 
 void MainController::main() {
