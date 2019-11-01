@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := Button.cpp
+SOURCES :=
 
 # header files in this project
-HEADERS := PlayerInformation.hpp Button.hpp
+HEADERS := 
 
 # other places to look for files for this project
 SEARCH  := 
