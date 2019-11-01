@@ -1,16 +1,15 @@
-#include "senderTask.hpp"
+#include "IRSendController.hpp"
 
 class TestTrans : rtos::task<> {
  private:
   PinPWMD2<38000, 2> ir_led;
 
  public:
-  TestTrans() : task("Test transistor"), ir_led(PinPWMD2<38000, 2>()){}
+  TestTrans() : task("Test transistor"), ir_led(PinPWMD2<38000, 2>()) {}
 
-	void main() override {
-		for(;;)
-		ir_led.write(1);
-	}
+  void main() override {
+    for (;;) ir_led.write(1);
+  }
 };
 
 class testMain : rtos::task<> {
@@ -22,7 +21,7 @@ class testMain : rtos::task<> {
  public:
   testMain(hwlib::pin_in& b, hwlib::pin_out& l, IRSendController& s) : but(b), red_led(l), sender(s) {}
   void main() {
-    sender.sendMessage(20, 1);
+        sender.sendMessage(20, 1);
     for (;;) {
       but.refresh();
       if (!but.read()) {
@@ -59,7 +58,7 @@ int main(void) {
   auto test_send = IRSendController();
   auto gozer = testMain(but, led, test_send);
 
-	// auto trans = TestTrans();
+  // auto trans = TestTrans();
 
   rtos::run();
 }

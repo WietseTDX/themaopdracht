@@ -1,12 +1,13 @@
-#ifndef SENDERTASK_HPP
-#define SENDERTASK_HPP
+#ifndef IRSENDCONTROLLER_HPP
+#define IRSENDCONTROLLER_HPP
 
-#include "customPWM.hpp"
+#include "PinPWMD2.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
 using hwlib::cout;
 using hwlib::endl;
+using hwlib::wait_us;
 
 class IRSendController : rtos::task<> {
  private:
@@ -15,14 +16,18 @@ class IRSendController : rtos::task<> {
   unsigned int mess_repeat;
   int bit_send;
   bool bit;
+  bool sending = false;
 
-  rtos::pool<uint8_t> playerPool;
-  rtos::pool<uint8_t> dataPool;
-  rtos::flag newMessageFlag, repeatFlag;
-  rtos::timer signalTimer;
+  rtos::pool<uint8_t> PlayerPool;
+  rtos::pool<uint8_t> DataPool;
+  rtos::flag NewMessageFlag, RepeatFlag;
+  rtos::timer SignalTimer;
 
-  enum class states { WAIT_FOR_FLAG, SEND_MESSAGE, BIT_1_HIGH, BIT_1_LOW, BIT_0_HIGH, BIT_0_LOW };
+  enum class states { WAIT_FOR_FLAG, TRANSMIT_MESSAGE };
+  enum class states_transmit { HIGH_WAIT, LOW_WAIT };
   states state;
+  states_transmit transmit_state;
+
   void generateMessage();
 
  public:
@@ -32,13 +37,14 @@ class IRSendController : rtos::task<> {
   IRSendController()
       : task("IR-SendController"),
         ir_led(PinPWMD2<38000, 2>()),
-        playerPool("playerPool"),
-        dataPool("dataPool"),
-        newMessageFlag(this, "newMessageFlag"),
-        repeatFlag(this, "repeatFlag"),
-        signalTimer(this, "signalTimer") {
-					ir_led.write(0);
-				}
+        PlayerPool("PlayerPool"),
+        DataPool("DataPool"),
+        NewMessageFlag(this, "NewMessageFlag"),
+        RepeatFlag(this, "RepeatFlag"),
+        SignalTimer(this, "SignalTimer") {
+    cout << "AJA" << endl;
+    ir_led.write(0);
+  }
 
   void main() override;
 
@@ -54,4 +60,4 @@ class IRSendController : rtos::task<> {
   }
 };
 
-#endif
+#endif  // IRSENDCONTROLLER_HPP

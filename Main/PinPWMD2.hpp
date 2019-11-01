@@ -1,5 +1,5 @@
-#ifndef CUSTOMPWM_HPP
-#define CUSTOMPWM_HPP
+#ifndef PINPWMD2_HPP
+#define PINPWMD2_HPP
 
 #include "hwlib.hpp"
 
@@ -67,4 +67,4 @@ class PinPWMD2 : public hwlib::pin_out {
   void flush() override {}
 };
 
-#endif
+#endif // PINPWMD2_HPP
