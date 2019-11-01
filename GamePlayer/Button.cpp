@@ -7,6 +7,8 @@ void Button::addButtonListener(ButtonListener *object){
 
 void Button::update(){
     for(unsigned int i = 0; i < index_listener; i++){
-        button_listeners[i]->buttonPressed(id);
+        if(!button.read()){
+            button_listeners[i]->buttonPressed(id);
+        }
     }
 }
