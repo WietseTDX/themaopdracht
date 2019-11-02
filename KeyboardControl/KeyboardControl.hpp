@@ -37,6 +37,15 @@ class KeyboardController {
   char current_cmd[3];
   int place = 0;
   public:
+  /// \brief
+  /// Constructor
+  /// \details
+  /// Initialise all the rtos objects and takes a reference to the maincontroller
   KeyboardController(MainController & main_c);
+
+  /// \brief
+  /// Update functie
+  /// \details
+  /// it checkes if a key is pressed on the keypad and if a command is competed it wil give that to the maincontroller
   void update();
 };
