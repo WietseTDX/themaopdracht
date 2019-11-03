@@ -1,14 +1,14 @@
-#include "Maincontroller.hpp"
+#include "MainController.hpp"
 
 MainController::MainController(InputHandeler& handeler) 
-: task("MainController"), ButtonPressedFlag(this, "ButtonPressedFlag"), ButtonIDPool("ButtonIDPool"), CommandChannel("CommandChannel"), ShotTimer(this, "ShotTimer"), BeenShotTimer(this, "BeenShotTimer"), BuzzerTimer(this, "BuzzerTimer"), PeriodFlag(this, 1000000, "PeriodFlag"){
+: task("MainController"), ButtonPressedFlag(this, "ButtonPressedFlag"), ButtonIDPool("ButtonIDPool"), CommandChannel(this, "CommandChannel"), ShotTimer(this, "ShotTimer"), BeenShotTimer(this, "BeenShotTimer"), BuzzerTimer(this, "BuzzerTimer"), PeriodFlag(this, 1000000, "PeriodFlag"){
 	handeler.addButton(&button);
 }
 
 void MainController::main() {
 	while (true) {
 		switch (state) {
-			case (states::WAIT_FOR_STAR_GAME) : {
+			case (states::WAIT_FOR_START_GAME) : {
 				auto event = wait(CommandChannel);
 				if (startGame()) {
 					count_down = 10;
@@ -32,23 +32,23 @@ void MainController::main() {
 				if (event == BeenShotTimer) {
 					been_shot = false;
 				}
-				if (event == buttonPressedFlag) {
+				if (event == ButtonPressedFlag) {
 					if (ButtonIDPool.read() == buttons::shoot_trigger && (!shot)) {
 						IrSend.sendMessage(info.getPlayerNumber(), info.getWeapon());
 						shot = true;
 						ShotTimer.set(timeWaitShot());
-						Buzzer.write(1);
+						buzzer.write(1);
 						BuzzerTimer.set(500000);
 					}
 				}
 				if (event == BuzzerTimer) {
-					Buzzer.write(0);
+					buzzer.write(0);
 				}
 				if (event == CommandChannel) {
-					command = CommandChannel.read();
+					StructData command = CommandChannel.read();
 					runCommand(command);
 					if (info.getHealthPoints() <= 0) {
-						state == states::WAIT_FOR_PC;
+						state = states::WAIT_FOR_PC;
 					}
 				}
 				if (event == PeriodFlag) {
@@ -61,8 +61,9 @@ void MainController::main() {
 			break;
 			}
 			case (states::WAIT_FOR_PC) : {
+				char keyboard;
 				hwlib::cin >> keyboard;
-				if (keybaord == 111) {
+				if (keyboard == 111) {
 					hwlib::cout << info;
 					state = states::WAIT_FOR_START;
 				}
@@ -89,19 +90,20 @@ int MainController::timeWaitShot() {
 	int weapon = info.getWeapon();
 	int wait = 500000;
 	wait +=500000 * weapon;
+	return wait;
 }
 
 int MainController::calculateDamage(int data) {
 	return data * 1;
 }
 void MainController::runCommand(StructData command) {
-	if(CommandData.type == 2){ //change health
-	int data = command.data & 0x001F;
+	if(command.to_change == 2){ //change health
 	int player = (command.data >> 5) & 0x001F;
-	if (player != 0 && (!been_shot) {
-		Buzzer.write(1);
+	if (player != 0 && (!been_shot)) {
+		int data = command.data & 0x001F;
+		buzzer.write(1);
 		BuzzerTimer.set(1000000);
-		info.addHit(player, weapon);
+		info.addHit(player, data);
 		BeenShotTimer.set(3000000);
 		been_shot = true;
 		int damage = calculateDamage(data);
@@ -111,15 +113,15 @@ void MainController::runCommand(StructData command) {
 		info.setHealthPoints(health);
 		Window.update(2);
 	} 
-  }else if(command.type == 3){ //change weapon
-    player_information.setWeapon(command.data);
+  }else if(command.to_change == 3){ //change weapon
+    info.setWeapon(command.data);
     Window.update(3);
   }
 }
 
 bool MainController::startGame() {
-	command = CommandChannel.read();
-	if (Command.type == 2) { // change time or start game
+	StructData command = CommandChannel.read();
+	if (command.to_change == 2) { // change time or start game
 		int data = command.data & 0x001F;
 		int player = (command.data >> 5) & 0x001F;
 		if (player == 0) {
@@ -132,8 +134,8 @@ bool MainController::startGame() {
 			}
 		}
 	}
-	else if(command.type == 1){//change player number
-		player_information.setPlayerNumber(command.data);
+	else if(command.to_change == 1){//change player number
+		info.setPlayerNumber(command.data);
 		Window.update(1);
 	}
   return false;

@@ -9,7 +9,7 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := IrSend.cpp MainController.cpp OLEDController.cpp Playerinformation.cpp
+SOURCES := IrSend.cpp MainController.cpp OLEDController.cpp Playerinformation.cpp ButtonHandeler.cpp ShootTrigger.cpp
 
 # header files in this project
 HEADERS := MainController.hpp
