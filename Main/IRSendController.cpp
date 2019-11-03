@@ -41,13 +41,13 @@ void IRSendController::main() {
           cout << "GENERATE" << endl;
           generateMessage();
         } else {
-					cout << "RepeatSend" << endl;
-        }  // if (wait_trigger) & else
+          cout << "RepeatSend" << endl;
+        }
         mess_repeat = 0;
-				state = states::TRANSMIT_MESSAGE;
-				wait_us(100);
-      }
-      case states::TRANSMIT_MESSAGE:
+        state = states::TRANSMIT_MESSAGE;
+        wait_us(100);
+      }  // case states::WAIT_FOR_FLAG
+      case states::TRANSMIT_MESSAGE: {
         sending = true;
         bit_send = 16;
         transmit_state = states_transmit::HIGH_WAIT;
@@ -67,7 +67,7 @@ void IRSendController::main() {
               transmit_state = states_transmit::LOW_WAIT;
               break;
             case states_transmit::LOW_WAIT:
-						ir_led.write(0);
+              ir_led.write(0);
               if (bit) {
                 SignalTimer.set(800);
               } else {
@@ -80,18 +80,19 @@ void IRSendController::main() {
                 sending = false;
               }
               break;
-            default: cout << "ERROR: IRSender transmitswitch failed."; break;
+            default: cout << "ERROR: IRSender transmit switch failed."; break;
           }  // switch transmit_state
-        }    // while (state == states::TRANSMIT_MESSAGE)
+        }    // while (sending)
         mess_repeat++;
         if (mess_repeat == 2) {
           state = states::WAIT_FOR_FLAG;
-        } else{
-					SignalTimer.set(3000);
-					wait(SignalTimer);
-				}
+        } else {
+          SignalTimer.set(3000);
+          wait(SignalTimer);
+        }
         break;
-      default: cout << "ERROR: IRSender switch failed."; break;
+      }  // case states::TRANSMIT_MESSAGE
+      default: cout << "ERROR: IRSender Main switch failed."; break;
     }  // switch state
   }    // for(;;)
 }  // main()

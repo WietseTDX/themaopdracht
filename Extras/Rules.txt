@@ -69,20 +69,22 @@ Includes / defineren / namespace
 	GEEN using namespace std; (gebruik std::)
 	GEEN using namespace hwlib; (gebruik hwlib::)
 	cpp file: 
-		1. #includes (op alfabetische volgorde omdat ik autistisch ben)
-		2. regel vrij
-		3. namespace (dit hoef je zelf niet te doen, dit gaat Stijn doen).
-		4. regel vrij
-		5. begin met je code
-	hpp file:
-		1. #ifndef NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
-		2. #define NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
+		0. #includes (op alfabetische volgorde omdat ik autistisch ben)
+		1. regel vrij
+		2. namespace (dit hoef je zelf niet te doen, dit gaat Stijn doen).
 		3. regel vrij
-		4. #includes (op alfabetische volgorde omdat ik autistisch ben)
-		5. regel vrij
-		6. begin met je code
-		7. regel vrij
-		8. #endif //NAAMVANHPPFILE_HPP //Na endif comment en moet met _HPP eindigen
+		4. begin met je code
+	hpp file:
+		0. #ifndef NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
+		1. #define NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
+		2. regel vrij
+		3. #includes (op alfabetische volgorde omdat ik autistisch ben)
+		4. regel vrij
+		5. namespace (dit hoef je zelf niet te doen, dit gaat Stijn doen).
+		6. regel vrij
+		7. begin met je code
+		8. regel vrij
+		9. #endif //NAAMVANHPPFILE_HPP //Na endif comment en moet met _HPP eindigen
 
 Map structuur:
 	Extras:(M)
@@ -93,9 +95,6 @@ Map structuur:
 	GameHost:(M)
 		Alle files die GameHost ALLEEN nodig heeft (waaronder een main.cpp)
 		Makefile om Gamehost te uplaoden
-	GamePC:(M)
-		Alle files die de PC ALLEEN nodig heeft (waaronder een  main.cpp)
-		Makefile om de PC te uploaden
 	Main:(M)
 		Alleen cpp en hpp files die in meerdere mapjes nodig zijn. (GEEN main.cpp)
 		Een leuk makefiletje/bashscript die een extra variable mee moet krijgen die dan de juiste makefile runt in het goede mapje.
