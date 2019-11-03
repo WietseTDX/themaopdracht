@@ -9,7 +9,21 @@ class ButtonHandeler : public rtos::task<> {
   int place = 0;
 
   public:
+  /// \brief
+  /// Constructor
+  /// \details
+  /// initiate all the rots objects
   ButthonHandeler();
+
+  /// \brief
+  /// The main function
+  /// \details
+  /// The main functions of the code with all the states
   void main() override;
+
+  /// \brief
+  /// Add a button object
+  /// \details
+  /// Add a button to update every period
   void addButton(Button *object);
 }
