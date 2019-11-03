@@ -1,6 +1,5 @@
 #include "receiver.hpp"
-using hwlib::cout;
-using hwlib::endl;
+
 //==================================
 // Private functions "IrReceiveController"
 //==================================
@@ -11,11 +10,12 @@ void IrReceiveController::sendCommand() {
   to_send |= data;
   // dataStruct.data = to_send;
   // main_c.translateCmd(dataStruct);
-  cout << to_send << endl;
+  cout << "total: " << to_send << " player: " << player << " data: " << data << endl;
+  // messageBitPrinter<16, uint16_t>(to_send);
 };
 
 void IrReceiveController::messageDecode(uint16_t &to_decode) {
-  uint8_t message = (to_decode >> 5);
+  uint16_t message = (to_decode >> 5);
   data = (message & 0x001F);
   message = (message >> 5);
   player = (message & 0x001F);
@@ -23,10 +23,10 @@ void IrReceiveController::messageDecode(uint16_t &to_decode) {
 
 void IrReceiveController::checkingMessage() {
   if (lastmessage == checkmessage) {
+    cout << "check: 1" << endl;
     uint16_t shiftcheck = checkmessage;
-    messageDecode(shiftcheck); // set data and player using the message given in the parameter
+    messageDecode(shiftcheck);  // set data and player using the message given in the parameter
     sendCommand();
-    cout << "1" << endl;
   } else {
     uint16_t shiftcheck = checkmessage;
     uint16_t shiftlast = lastmessage;
@@ -40,22 +40,22 @@ void IrReceiveController::checkingMessage() {
     lastxor = (lastmessage & 0x001F);
     checkxor = (checkmessage & 0x001F);
     if (lastMathxor == checkMathxor) {
+      cout << "check: 2" << endl;
       sendCommand();
-      cout << "2" << endl;
     } else {
       if (lastxor == lastMathxor) {
         shiftlast = lastmessage;
         messageDecode(shiftlast);
+        cout << "check: 3" << endl;
         sendCommand();
-        cout << "3" << endl;
       } else if (checkxor == checkMathxor) {
         shiftcheck = checkmessage;
         messageDecode(shiftcheck);
+        cout << "check: 3" << endl;
         sendCommand();
-        cout << "3" << endl;
       }
     }
-  }      
+  }
 };
 
 //==================================
@@ -78,7 +78,7 @@ void IrReceiveController::main() {
           signal_high = true;
         } else if (!signal && signal_high) {
           first_high_end = hwlib::now_us();
-					start_low = first_high_end;
+          start_low = first_high_end;
           high_time = first_high_end - start_high;
           signal_high = false;
           if (high_time > 300) {
@@ -86,7 +86,7 @@ void IrReceiveController::main() {
             lastmessage = 0;
             bitcount = 0;
             first_low_time = 0;
-						resettime = 0;
+            resettime = 0;
             state = states::RECEIVING;
           }
         }
@@ -155,7 +155,7 @@ void IrReceiveController::main() {
             }
           }
         }
-        break;        
+        break;
     }
   };
 };
