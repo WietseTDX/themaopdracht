@@ -1,19 +1,24 @@
 #include "ButtonHandeler.hpp"
 
-ButtonHandeler::Buttonhandeler() : task("ButtonHandeler"), PeriodFlag(this, 100000, "PeriodFlag") {}
-
-void ButtonHandeler::main() {
+void InputHandler::main() {
   while (true) {
     auto event = wait(PeriodFlag);
-    keyboard.update();
-    for (int i=0; i<place; i++) {
+    for (int i=0; i<place_k; i++) {
+      keyboard[i]->update();
+    }
+    for (int i=0; i<place_b; i++) {
       button[i]->update();
     }
   }
 }
 
 
-void ButtonHandeler::addButton(Button *object) {
-  button[place] = object;
-  place++;
+void InputHandler::addButton(Button *object) {
+  button[place_b] = object;
+  place_b++;
+}
+
+void InputHandler::addKeyboard(KeyboardController *object) {
+  keyboard[place_k] = object;
+  place_k++;
 }

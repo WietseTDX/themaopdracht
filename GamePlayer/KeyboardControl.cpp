@@ -1,7 +1,5 @@
 #include "KeyboardControl.hpp"
 
-KeyboardController::KeyboardController(MainController & main_c) : main_c(main_c) {}
-
 void KeyboardController::update() {
   char key = keypad.pressed();
   if (key != '\0') {
@@ -35,9 +33,13 @@ void KeyboardController::update() {
           }
           return;
         } else if (current_cmd[1] == 'A') {
-          main_c.translateCommand(StructData(1, number));
+          for (int i=0; i<index_listener; i++) {
+            keyboard_listener[i]->translateCmd(StructData(1, number), id);
+          }
         } else if (current_cmd[1] == 'B') {
-          main_c.translateCommand(StructData(3, number));
+          for (int i=0; i<index_listener; i++) {
+            keyboard_listener[i]->translateCmd(StructData(3, number), id);
+          }
         }
       }
       for (int i=0; i<3; i++) {
@@ -45,4 +47,9 @@ void KeyboardController::update() {
       }
     } 
   }
+}
+
+void KeyboardController::addKeyboardListener(KeyboardListener *object) {
+  keyboard_listener[index_listener] = object;
+  index_listener++;
 }

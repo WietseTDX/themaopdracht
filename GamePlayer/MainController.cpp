@@ -1,10 +1,5 @@
 #include "MainController.hpp"
 
-MainController::MainController(InputHandeler& handeler) 
-: task("MainController"), ButtonPressedFlag(this, "ButtonPressedFlag"), ButtonIDPool("ButtonIDPool"), CommandChannel(this, "CommandChannel"), ShotTimer(this, "ShotTimer"), BeenShotTimer(this, "BeenShotTimer"), BuzzerTimer(this, "BuzzerTimer"), PeriodFlag(this, 1000000, "PeriodFlag"){
-	handeler.addButton(&button);
-}
-
 void MainController::main() {
 	while (true) {
 		switch (state) {
@@ -15,7 +10,7 @@ void MainController::main() {
 					state = states::COUNTDOWN;
 				}
 			break;
-			}
+			} // case (states::WAIT_FOR_START_GAME)
 			case (states::COUNTDOWN) : {
 				auto event = wait(PeriodFlag);
 				count_down--;
@@ -23,7 +18,7 @@ void MainController::main() {
 					state = states::WAIT_FOR_COMMAND;
 				}
 			break;
-			}
+			} // case (states::COUNTDOWN)
 			case (states::WAIT_FOR_COMMAND) : {
 				auto event = wait(ShotTimer + BeenShotTimer + ButtonPressedFlag + BuzzerTimer + CommandChannel + PeriodFlag);
 				if (event == ShotTimer) {
@@ -54,23 +49,23 @@ void MainController::main() {
 				if (event == PeriodFlag) {
 					info.setTime(info.getTime() - 1);
 					Window.update(0);
-					if (info.getTime <= 0) {
+					if (info.getTime() <= 0) {
 						state = states::WAIT_FOR_PC;
 					}
 				}
 			break;
-			}
+			} // case (states::WAIT_FOR_COMMAND)
 			case (states::WAIT_FOR_PC) : {
-				char keyboard;
-				hwlib::cin >> keyboard;
-				if (keyboard == 111) {
+				char keyboard_input;
+				hwlib::cin >> keyboard_input;
+				if (keyboard_input == 111) {
 					hwlib::cout << info;
-					state = states::WAIT_FOR_START;
+					state = states::WAIT_FOR_START_GAME;
 				}
 			break;
-			}
-		}
-	}
+			} // case (states::WAIT_FOR_PC)
+		} // switch (state)
+	} // while (true)
 }
 
 
@@ -78,8 +73,10 @@ void MainController::buttonPressed(int button) {
 	ButtonIDPool.write(button);
 	ButtonPressedFlag.set();
 }
-void MainController::translateCommand(StructData data) {
-	CommandChannel.write(data);
+void MainController::translateCmd(StructData data, int id) {
+	if (id == keyboards::keypad) {
+		CommandChannel.write(data);
+	}
 }
 
 

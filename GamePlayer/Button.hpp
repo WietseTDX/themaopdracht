@@ -1,3 +1,6 @@
+#ifndef _BUTTON
+#define _BUTTON
+
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
@@ -25,3 +28,4 @@ public:
     void update();
 };
 
+#endif // _BUTTON

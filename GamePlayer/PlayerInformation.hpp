@@ -12,6 +12,7 @@ private:
     uint8_t player_number = 0;
     std::array<std::array<uint8_t, 2>, N> hits;
     uint8_t index_array = 0;
+    int time = 0;
 public:
     void setWeapon(uint8_t i){
         weapon = i;
@@ -53,6 +54,13 @@ public:
         out << "}";
 		return out;
 	}
+    int getTime(){
+        return time;
+    }
+
+    void setTime(int i){
+        time = i;
+    }
 };
 
 

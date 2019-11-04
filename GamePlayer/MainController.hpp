@@ -1,4 +1,4 @@
-#ifdef _MAIN_CONTROLLER
+#ifndef _MAIN_CONTROLLER
 #define _MAIN_CONTROLLER
 
 #include "hwlib.hpp"
@@ -9,15 +9,12 @@
 #include "WindowController.hpp"
 #include "Button.hpp"
 #include "StructData.cpp"
+#include "ButtonHandeler.hpp"
+#include "KeyboardControl.hpp"
 //============================
 
-struct StructData {
-	StructData(int to_change, uint16_t data) : to_change(to_change), data(data) {};
-	int to_change;
-	uint16_t data;
-};
 
-class MainController : public rtos::task<> {
+class MainController : public rtos::task<>, public KeyboardListener, public ButtonListener {
 	rtos::flag ButtonPressedFlag;
 	rtos::pool<int> ButtonIDPool;
 	rtos::channel<StructData, 4> CommandChannel; //4 Omdat de Receiver kan elke 40 ms een bericht ontvangen en je kan niet sneller dan 10x per seconde een kopje indrukken en van de keyboard controller krijgt die een bericht per seconde omdat sneller wel heel lastig is. De main heeft een deadline van 50 ms neem ik aan dat voor de 40 ms van de receiver neemt 2 plekken in en de button een halve plek dat kan niet dus 1 en voor de keyborad ook 1, 1tje er bij voor de veiligheid dus 4 plekken
@@ -26,27 +23,50 @@ class MainController : public rtos::task<> {
 	rtos::timer BuzzerTimer;
 	rtos::clock PeriodFlag;
 
-	hwlib::window w = hwlib::window();
+	hwlib::target::pin_oc scl = hwlib::target::pin_oc(hwlib::target::pins::scl);
+	hwlib::target::pin_oc sda = hwlib::target::pin_oc(hwlib::target::pins::sda);
+	hwlib::i2c_bus_bit_banged_scl_sda i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda(scl, sda);
+	hwlib::glcd_oled oled = hwlib::glcd_oled(i2c_bus);
+
+	PlayerInformation<100> info = PlayerInformation<100>();
+	WindowController Window = WindowController(oled, info);
 
 	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d5);
-	IrSendController IrSend;
-	PlayerInformation<100> info = PlayerInformation<100>();
-	WindowController Window(w, info);
-	Button button;
+	
+	IRSendController IrSend;
+
+	InputHandler handler;
+
 	int count_down;
-	int keyboard;
 	bool shot = false;
 	bool been_shot = false;
 
 	enum class states {WAIT_FOR_COMMAND, WAIT_FOR_START_GAME, WAIT_FOR_PC, COUNTDOWN};
 	states state = states::WAIT_FOR_START_GAME;
 	enum buttons {shoot_trigger = 0};
+	enum keyboards {keypad = 0};
+	hwlib::target::pin_in button_pin = hwlib::target::pin_in(hwlib::target::pins::d53);
+	KeyboardController keyboard = KeyboardController(keyboards::keypad);
+	Button button = Button(button_pin, buttons::shoot_trigger);
 	public:
 	/// \brief
 	/// Constructor
 	/// \details
 	/// To initiate the the rtos objects and fill the button in the button handeler
-	MainController(InputHandeler& handeler);
+	MainController(InputHandler &handler) : 
+		task("MainController"), 
+		ButtonPressedFlag(this, "ButtonPressedFlag"), 
+		ButtonIDPool("ButtonIDPool"), 
+		CommandChannel(this, "CommandChannel"), 
+		ShotTimer(this, "ShotTimer"), 
+		BeenShotTimer(this, "BeenShotTimer"), 
+		BuzzerTimer(this, "BuzzerTimer"), 
+		PeriodFlag(this, 1000000, "PeriodFlag"){
+		handler.addKeyboard(&keyboard);
+		handler.addButton(&button);
+		keyboard.addKeyboardListener(this);
+		button.addButtonListener(this);
+	}
 
 	/// \brief
 	/// The main
@@ -63,8 +83,8 @@ class MainController : public rtos::task<> {
 	/// \brief
 	/// translate Command
 	/// \details
-	/// It puts the StructData in the Channel
-	void translateCommand(StructData data);
+	/// It puts the StructData in the Channel <br> the id is by default 0 because with the keyboard he gets a id but with IrReceive not. <br> With 0 it will always pass thourt to the right state for the IRReciever
+	void translateCmd(StructData data, int id = 0);
 
 	// interne functies
 	private:
