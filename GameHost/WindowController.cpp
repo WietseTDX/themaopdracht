@@ -9,7 +9,7 @@ void WindowController::main() {
         info = WindowPool.read();
         if (info.type == 0) {
           state = states::BAD_CMD;
-        } else if (info.type == 1) {
+        } else if (info.type == 1 || info.type == 3) {
           state = states::GOOD_CMD;
         } else if (info.type == 2) {
           state = states::CLEAR_CMD;
@@ -50,7 +50,7 @@ void WindowController::main() {
         block_mid.clear();
         block_bot.clear();
         text_mid << "\f" << info.to_show;
-        if (info.to_show != comp) {
+        if (info.type == 1) {
           text_bot << "\f"
                    << "press # to send";
         } else {
@@ -82,7 +82,7 @@ void WindowController::main() {
   }      // for(;;)
 }  // main()
 
-void WindowController::updateScreen(const WindowStruct& new_info) {
+void WindowController::update(const WindowStruct& new_info) {
   UpdateFlag.set();
   WindowPool.write(new_info);
 }  // update(const WindowStruct& new_info)

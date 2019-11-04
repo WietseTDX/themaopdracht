@@ -12,10 +12,12 @@ class testMain : rtos::task<> {
 
   void main() override {
     auto testScreen0 = WindowStruct{0, "C0xA"};
-    auto testScreen1 = WindowStruct{1, {'*'}};
+		auto testScreen1 = WindowStruct{1, "C10A"};
     auto testScreen2 = WindowStruct{2, "Nothing"};
-    screen.updateScreen(WindowStruct{2,""});
-		screen.updateScreen(WindowStruct{2,""});
+    auto testScreen3 = WindowStruct{3, {'*'}};
+
+    screen.update(WindowStruct{2,""});
+		screen.update(WindowStruct{2,""});
     for (;;) {
       hwlib::wait_ms(100);
       button.refresh();
@@ -27,10 +29,13 @@ class testMain : rtos::task<> {
           upd++;
           update_struct = testScreen2;
         } else if (upd == 2) {
-          upd = 0;
+          upd++;
+          update_struct = testScreen3;
+        } else if(upd == 3){
+					upd = 0;
           update_struct = testScreen0;
-        }
-        screen.updateScreen(update_struct);
+				}
+        screen.update(update_struct);
       }
     }
   }
