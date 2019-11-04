@@ -59,9 +59,9 @@ void IRSendController::main() {
               bit = message & mask;
               ir_led.write(1);
               if (bit) {
-                SignalTimer.set(1600);
+                SignalTimer.set(long_wait);
               } else {
-                SignalTimer.set(800);
+                SignalTimer.set(short_wait);
               }
               wait(SignalTimer);
               transmit_state = states_transmit::LOW_WAIT;
@@ -69,9 +69,9 @@ void IRSendController::main() {
             case states_transmit::LOW_WAIT:
 						ir_led.write(0);
               if (bit) {
-                SignalTimer.set(800);
+                SignalTimer.set(short_wait);
               } else {
-                SignalTimer.set(1600);
+                SignalTimer.set(long_wait);
               }
               wait(SignalTimer);
               if (bit_send > 0) {
