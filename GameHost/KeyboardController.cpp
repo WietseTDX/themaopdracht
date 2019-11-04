@@ -10,7 +10,7 @@ void KeyboardController::main() {
         switch(state){
             case states::IDLE:
                 {
-                    wait( hundred_ms_clock );
+                    wait( InputClock );
                     input = keypad.pressed();
                     if(input == 'C'){   // Als de input C is moet keyboardcontroller door naar de RECEIVING state
                         strcpy(command, "C");
@@ -38,7 +38,7 @@ void KeyboardController::main() {
                 } // states::IDLE
             case states::RECEIVING:
                 {
-                    wait( hundred_ms_clock );
+                    wait( InputClock );
                     input = keypad.pressed();
                     if(input == '#'){  // zolang de input geen # is moet de input aan het command anders moet keyboardcontroller naar de sending state
                         led.write(1);
@@ -63,21 +63,21 @@ void KeyboardController::main() {
                 } // states::RECEIVING
             case states::SENDING:
                 {
-                    wait( hundred_ms_clock );
+                    wait( InputClock );
                     input = keypad.pressed();
                     if(input == '#'){
                         led.write(1);
                         led.flush();
                         hwlib::wait_ms(100);
-                        led.write(0);TestMain
+                        led.write(0);
                         led.flush();
-                        strcpy(commanTestMain
-                        main_c.setCmdTestMain
-                    } else if(input =TestMain
-                        led.write(1);TestMain
+                        strcpy(command, "#");
+                        main_c.setCmd(command);
+                    } else if(input == '*'){
+                        led.write(1);
                         led.flush();
-                        hwlib::wait_mTestMain
-                        led.write(0);TestMain
+                        hwlib::wait_ms(100);
+                        led.write(0);
                         led.flush();
                         strcpy(command, "*");
                         main_c.setCmd(command);

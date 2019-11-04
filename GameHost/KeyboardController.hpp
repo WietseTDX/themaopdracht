@@ -17,7 +17,7 @@ class KeyboardController : rtos::task<> {
         hwlib::keypad<17> keypad;
         char command[10];
         char input;
-        rtos::clock hundred_ms_clock;
+        rtos::clock InputClock;
     
     public:
         KeyboardController(hwlib::matrix_of_switches& matrix, TestMain &main, hwlib::target::pins ledpin):
@@ -25,7 +25,7 @@ class KeyboardController : rtos::task<> {
             led( hwlib::target::pin_out(ledpin)),
             main_c(main),
             keypad(hwlib::keypad<17>(matrix, "123A456B789C*0#D")),
-            hundred_ms_clock( this, 200'000, "hundred_ms_clock")
+            InputClock( this, 200'000, "InputClock")
         {}
 
         void main();
