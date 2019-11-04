@@ -1,7 +1,0 @@
-start(0)[1] - speler(1-5)[5] - data(6-10)[5] - controle(11-15)[5] 
-      1         0=gl 1-31=p     wapentype of      xors van alles
-                                commands(gl)   1-6, 2-7, 3-8, 4-9, 5-10
-
-800 ir en 1600 niks = 0
-1600 ir en 800 niks = 1
-4 ms niks betekent nieuw bericht
