@@ -76,6 +76,7 @@ void MainController::buttonPressed(int button) {
 void MainController::translateCmd(StructData data, int id) {
 	if (id == keyboards::keypad) {
 		CommandChannel.write(data);
+		hwlib::cout << "translateCmd to change: " << data.to_change << " Data: " << data.data << hwlib::endl;
 	}
 }
 

@@ -23,13 +23,8 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	rtos::timer BuzzerTimer;
 	rtos::clock PeriodFlag;
 
-	hwlib::target::pin_oc scl = hwlib::target::pin_oc(hwlib::target::pins::scl);
-	hwlib::target::pin_oc sda = hwlib::target::pin_oc(hwlib::target::pins::sda);
-	hwlib::i2c_bus_bit_banged_scl_sda i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda(scl, sda);
-	hwlib::glcd_oled oled = hwlib::glcd_oled(i2c_bus);
-
-	PlayerInformation<100> info = PlayerInformation<100>();
-	WindowController Window = WindowController(oled, info);
+	PlayerInformation<100> info;
+	WindowController Window;
 
 	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d5);
 	
@@ -53,7 +48,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	/// Constructor
 	/// \details
 	/// To initiate the the rtos objects and fill the button in the button handeler
-	MainController(InputHandler &handler) : 
+	MainController(InputHandler &handler, hwlib::window & w) : 
 		task("MainController"), 
 		ButtonPressedFlag(this, "ButtonPressedFlag"), 
 		ButtonIDPool("ButtonIDPool"), 
@@ -61,7 +56,8 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 		ShotTimer(this, "ShotTimer"), 
 		BeenShotTimer(this, "BeenShotTimer"), 
 		BuzzerTimer(this, "BuzzerTimer"), 
-		PeriodFlag(this, 1000000, "PeriodFlag"){
+		PeriodFlag(this, 1000000, "PeriodFlag"),
+		Window(w, info){
 		handler.addKeyboard(&keyboard);
 		handler.addButton(&button);
 		keyboard.addKeyboardListener(this);

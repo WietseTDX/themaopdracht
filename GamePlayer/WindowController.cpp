@@ -83,6 +83,7 @@ void WindowController::drawBox(hwlib::window_part_t & window, int x, int y){
 //========================================
 
 void WindowController::update(int window_number){
+    hwlib::cout << "in Windowcontroller.update" << hwlib::endl;
     WindowChannel.write(window_number);
 }
 
