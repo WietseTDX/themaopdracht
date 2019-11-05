@@ -26,7 +26,8 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	PlayerInformation<100> info;
 	WindowController Window;
 
-	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d14);
+	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d12);
+	
 	
 	IRSendController IrSend;
 

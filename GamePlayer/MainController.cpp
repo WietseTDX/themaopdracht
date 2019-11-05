@@ -93,7 +93,7 @@ int MainController::timeWaitShot() {
 }
 
 int MainController::calculateDamage(int data) {
-	return data * 1;
+	return (data * 1) + 1;
 }
 void MainController::runCommand(StructData command) {
 	if(command.to_change == 2){ //change health
@@ -131,7 +131,10 @@ bool MainController::startGame() {
 				return false;
 			}
 			if (data == 0) {
-				return true;
+				if (!(info.getPlayerNumber() == 0)) {
+					return true;
+				}
+				return false;
 			}
 		}
 	}
