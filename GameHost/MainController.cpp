@@ -47,7 +47,7 @@ void MainController::commandActions() {
       cout << "*" << endl;
       if (first_send) {
         ir_sender.sendMessage(0, data);
-        first_send = true;
+        first_send = false;
       } else {
         ir_sender.repeatSend();
       }
@@ -55,7 +55,7 @@ void MainController::commandActions() {
       cout << "#" << endl;
       if (first_send) {
         ir_sender.sendMessage(0, data);
-        first_send = true;
+        first_send = false;
       } else {
         ir_sender.repeatSend();
       }
@@ -73,6 +73,7 @@ void MainController::main() {
         wait(CommandFlag);
         strcpy(command, CommandPool.read());
         verifyCommand();
+        first_send = true;
         state = states::COMMAND_SET;
         break;
       }  // states::IDLE
@@ -84,7 +85,7 @@ void MainController::main() {
         if (set_command[0] == 'C') {
           screen_data.type = 2;
           window.update(screen_data);
-          first_send = false;
+          first_send = true;
           state = states::IDLE;
         } else {
           commandActions();

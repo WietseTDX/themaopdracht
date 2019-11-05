@@ -67,7 +67,6 @@ void KeyboardController::main() {
                     wait( InputClock );
                     input = keypad.pressed();
                     if(input == '#'){
-                        cout << "-" << endl;
                         led.write(1);
                         led.flush();
                         hwlib::wait_ms(100);
