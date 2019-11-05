@@ -64,7 +64,7 @@ class IRSendController : rtos::task<> {
         RepeatFlag(this, "RepeatFlag"),
         SignalTimer(this, "SignalTimer") {
     // ir_led.write(1);
-    // hwlib::wait_ms(1000);
+    // hwlib::wait_ms(100);
     ir_led.write(0);
   }
 

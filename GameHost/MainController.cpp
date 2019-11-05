@@ -27,6 +27,7 @@ void MainController::verifyCommand() {
     if (minutes > 0 && minutes < 16) {
       screen_data.type = 1;
       data = minutes;
+      data += 16;
     } else {
       screen_data.type = 0;
     }
@@ -44,7 +45,6 @@ void MainController::verifyCommand() {
 void MainController::commandActions() {
   if (screen_data.type == 1 || screen_data.type == 3) {
     if (set_command[0] == '*') {
-      cout << "*" << endl;
       if (first_send) {
         ir_sender.sendMessage(0, data);
         first_send = false;
@@ -52,7 +52,6 @@ void MainController::commandActions() {
         ir_sender.repeatSend();
       }
     } else if (set_command[0] == '#') {
-      cout << "#" << endl;
       if (first_send) {
         ir_sender.sendMessage(0, data);
         first_send = false;

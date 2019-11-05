@@ -18,6 +18,7 @@ void IRSendController::generateMessage() {
   message |= (data << 5);
   uint8_t xor_res = (player ^ data);
   message |= (xor_res & 0x1F);
+  bitPrinter<16, uint16_t>(message);
 }
 
 //====================================
@@ -38,10 +39,10 @@ void IRSendController::main() {
       case states::WAIT_FOR_FLAG: {
         auto wait_trigger = wait(NewMessageFlag + RepeatFlag);
         if (wait_trigger == NewMessageFlag) {
-          cout << "GENERATE" << endl;
+          // cout << "GENERATE" << endl;
           generateMessage();
         } else {
-					cout << "RepeatSend" << endl;
+					// cout << "RepeatSend" << endl;
         }  // if (wait_trigger) & else
         mess_repeat = 0;
 				state = states::TRANSMIT_MESSAGE;
