@@ -31,6 +31,7 @@ void MainController::main() {
 					if (ButtonIDPool.read() == buttons::shoot_trigger && (!shot)) {
 						IrSend.sendMessage(info.getPlayerNumber(), info.getWeapon());
 						shot = true;
+						hwlib::cout << "ButtonPressed" << hwlib::endl;
 						ShotTimer.set(timeWaitShot());
 						buzzer.write(1);
 						BuzzerTimer.set(500000);
@@ -123,8 +124,8 @@ bool MainController::startGame() {
 		int data = command.data & 0x001F;
 		int player = (command.data >> 5) & 0x001F;
 		if (player == 0) {
-			if (((data >> 5) & 0x01)) {
-				info.setTime(data & 0b000001111);
+			if (((data >> 4) & 0x01)) {
+				info.setTime((data & 0b000001111) * 60);
 				Window.update(0);
 				hwlib::cout << "Startgame set time " << hwlib::endl;
 				return false;

@@ -45,7 +45,6 @@ public:
         for (int i=0; i<4; i++) {
 			update(i);
 		}
-        hwlib::cout << "In constructor Windowcontroller" << hwlib::endl;
     }
     /// \brief 
     /// Update Window

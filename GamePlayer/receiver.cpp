@@ -117,7 +117,7 @@ void IrReceiveController::main() {
             first_low_time = hwlib::now_us() - first_high_end;
             if (first_low_time > 700 && first_low_time < zero_high_time + offset) {
               lastmessage |= 1;
-              hwlib::cout << "*";
+              // hwlib::cout << "*";
               bitcount++;
             } else {
               high_time = 0;
@@ -134,10 +134,10 @@ void IrReceiveController::main() {
             high_time = start_low - start_high;
             if (high_time > 700 && high_time < zero_high_time + offset) {
               lastmessage = (lastmessage << 1);
-              hwlib::cout << "-";
+              // hwlib::cout << "-";
             } else if (high_time > 1500 && high_time < one_high_time + offset) {
               lastmessage = (lastmessage << 1);
-              hwlib::cout << "|";
+              // hwlib::cout << "|";
               lastmessage |= 1;
             } else {
               high_time = 0;
@@ -147,7 +147,7 @@ void IrReceiveController::main() {
             }
             signal_high = false;
             bitcount++;
-          } else {
+          } else if (bitcount != 16) {
             resettime = hwlib::now_us() - start_low;
             if (resettime > 4000) {
               // hwlib::cout << "R" << bitcount << ' ' << resettime << hwlib::endl;

@@ -26,7 +26,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	PlayerInformation<100> info;
 	WindowController Window;
 
-	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d5);
+	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d14);
 	
 	IRSendController IrSend;
 
@@ -40,7 +40,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	states state = states::WAIT_FOR_START_GAME;
 	enum buttons {shoot_trigger = 0};
 	enum keyboards {keypad = 0};
-	hwlib::target::pin_in button_pin = hwlib::target::pin_in(hwlib::target::pins::d53);
+	hwlib::target::pin_in button_pin = hwlib::target::pin_in(hwlib::target::pins::d11);
 	KeyboardController keyboard = KeyboardController(keyboards::keypad);
 	Button button = Button(button_pin, buttons::shoot_trigger);
 	public:
