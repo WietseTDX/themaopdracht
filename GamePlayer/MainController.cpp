@@ -127,7 +127,7 @@ bool MainController::startGame() {
 			if (((data >> 4) & 0x01)) {
 				info.setTime((data & 0b000001111) * 60);
 				Window.update(0);
-				hwlib::cout << "Startgame set time " << hwlib::endl;
+				hwlib::cout << "Startgame set time: " << info.getTime() << hwlib::endl;
 				return false;
 			}
 			if (data == 0) {

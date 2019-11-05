@@ -6,7 +6,6 @@ void Button::addButtonListener(ButtonListener *object){
 }
 
 void Button::update(){
-    hwlib::cout << "index_listener: " << index_listener << hwlib::endl;
     for(unsigned int i = 0; i < index_listener; i++){
         if(!button.read()){
             button_listeners[i]->buttonPressed(id);
