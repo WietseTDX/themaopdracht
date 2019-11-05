@@ -15,8 +15,7 @@ class IrReceiveController : public rtos::task<> {
   enum states { IDLE, RECEIVING };
   states state = IDLE;
   due::pin_in sensor;
-  // StructData dataStruct(2, 0);
-  // MainController &main_c;
+  MainController &main_c;
   bool signal;
   bool signal_high = false;
   bool high_check = false;
@@ -24,7 +23,7 @@ class IrReceiveController : public rtos::task<> {
   int start_high;
   int start_low;
   int resettime;
-  int offset = 175;
+  int offset = 200;
   int one_high_time = 1600;
   int zero_high_time = 800;
   int bitcount = 0;
@@ -60,7 +59,7 @@ class IrReceiveController : public rtos::task<> {
   }
 
  public:
-  IrReceiveController(due::pins sensor, const char *name) : task(name), sensor(due::pin_in(sensor)){};
+  IrReceiveController(due::pins sensor, MainController & main_c) : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
 
   void main();
 };

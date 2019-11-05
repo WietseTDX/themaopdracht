@@ -7,11 +7,9 @@
 void IrReceiveController::sendCommand() {
   uint16_t to_send = 0x0;
   to_send |= (player << 5);
-  to_send |= data;
-  // dataStruct.data = to_send;
-  // main_c.translateCmd(dataStruct);
+  to_send |= data;  
   cout << "total: " << to_send << " player: " << player << " data: " << data << endl;
-  // messageBitPrinter<16, uint16_t>(to_send);
+  main_c.translateCmd(StructData(2, to_send));
 };
 
 void IrReceiveController::messageDecode(uint16_t &to_decode) {
@@ -88,6 +86,7 @@ void IrReceiveController::main() {
             first_low_time = 0;
             resettime = 0;
             state = states::RECEIVING;
+            // hwlib::cout << "*";
           }
         }
         break;
@@ -118,6 +117,7 @@ void IrReceiveController::main() {
             first_low_time = hwlib::now_us() - first_high_end;
             if (first_low_time > 700 && first_low_time < zero_high_time + offset) {
               lastmessage |= 1;
+              hwlib::cout << "*";
               bitcount++;
             } else {
               high_time = 0;
@@ -134,8 +134,10 @@ void IrReceiveController::main() {
             high_time = start_low - start_high;
             if (high_time > 700 && high_time < zero_high_time + offset) {
               lastmessage = (lastmessage << 1);
+              hwlib::cout << "-";
             } else if (high_time > 1500 && high_time < one_high_time + offset) {
               lastmessage = (lastmessage << 1);
+              hwlib::cout << "|";
               lastmessage |= 1;
             } else {
               high_time = 0;
@@ -148,6 +150,7 @@ void IrReceiveController::main() {
           } else {
             resettime = hwlib::now_us() - start_low;
             if (resettime > 4000) {
+              // hwlib::cout << "R" << bitcount << ' ' << resettime << hwlib::endl;
               high_time = 0;
               signal_high = false;
               state = states::IDLE;
