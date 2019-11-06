@@ -38,10 +38,8 @@ void IRSendController::main() {
       case states::WAIT_FOR_FLAG: {
         auto wait_trigger = wait(NewMessageFlag + RepeatFlag);
         if (wait_trigger == NewMessageFlag) {
-          cout << "GENERATE" << endl;
           generateMessage();
         } else {
-					cout << "RepeatSend" << endl;
         }  // if (wait_trigger) & else
         mess_repeat = 0;
 				state = states::TRANSMIT_MESSAGE;
@@ -87,8 +85,7 @@ void IRSendController::main() {
         if (mess_repeat == 2) {
           state = states::WAIT_FOR_FLAG;
         } else{
-					SignalTimer.set(3000);
-					wait(SignalTimer);
+					wait_ms(3);
 				}
         break;
       default: cout << "ERROR: IRSender switch failed."; break;

@@ -27,7 +27,7 @@ void MainController::verifyCommand() {
     if (minutes > 0 && minutes < 16) {
       screen_data.type = 1;
       data = minutes;
-      data += 16;
+      data += 16;								// data should look like 1xxxx with time. xxxx is the minutes
     } else {
       screen_data.type = 0;
     }
@@ -81,10 +81,9 @@ void MainController::main() {
         window.update(screen_data);
         wait(CommandFlag);
         strcpy(set_command, CommandPool.read());
-        if (set_command[0] == 'C') {
+        if (set_command[0] == 'C') {					// Clear screen
           screen_data.type = 2;
           window.update(screen_data);
-          first_send = true;
           state = states::IDLE;
         } else {
           commandActions();

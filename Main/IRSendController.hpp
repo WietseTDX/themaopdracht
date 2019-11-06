@@ -8,6 +8,7 @@
 using hwlib::cout;
 using hwlib::endl;
 using hwlib::wait_us;
+using hwlib::wait_ms;
 
 /// @file
 
