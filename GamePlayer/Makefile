@@ -15,7 +15,7 @@ SOURCES := Button.cpp InputHandler.cpp IRSendController.cpp KeyboardController.c
 HEADERS := Button.hpp InputHandler.hpp IRSendController.hpp KeyboardController.hpp MainController.hpp IRReceiveController.hpp WindowController.hpp PlayerInformation.hpp PinPWMD2.hpp StructData.hpp
 
 # other places to look for files for this project
-SEARCH  := 
+SEARCH  := ../Main/
 
 # set REATIVE to the next higher directory 
 # and defer to the Makefile.due there

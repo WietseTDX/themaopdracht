@@ -1,7 +1,7 @@
 #ifndef _MAIN_CONTROLLER
 #define _MAIN_CONTROLLER
 
-#include "IRSendController.hpp"
+#include "../Main/IRSendController.hpp"
 #include "WindowController.hpp"
 #include "InputHandler.hpp"
 
@@ -26,10 +26,8 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 
 	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d12);
 	
-	
 	WindowController Window;
 	IRSendController IrSend;
-
 	InputHandler handler;
 
 	int count_down;
