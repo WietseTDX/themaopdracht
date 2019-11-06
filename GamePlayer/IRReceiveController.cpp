@@ -50,7 +50,7 @@ void IRReceiveController::checkingMessage() {
       }
     }
   }
-};
+}
 
 //==================================
 // Public funtions "IrReceiveController"
@@ -58,7 +58,6 @@ void IRReceiveController::checkingMessage() {
 
 void IRReceiveController::main() {
   state = states::IDLE;
-  hwlib::wait_ms(100);
   for (;;) {
     switch (state) {
       case IDLE:
@@ -70,18 +69,18 @@ void IRReceiveController::main() {
           start_high = hwlib::now_us();
           signal_high = true;
         } else if (!signal && signal_high) {
-          first_high_end = hwlib::now_us();
-          start_low = first_high_end;
-          high_time = first_high_end - start_high;
-          signal_high = false;
-          if (high_time > 300) {
-            halfway = false;
-            lastmessage = 0;
-            bitcount = 0;
-            first_low_time = 0;
-            resettime = 0;
-            state = states::RECEIVING;
-          }
+            first_high_end = hwlib::now_us();
+            start_low = first_high_end;
+            high_time = first_high_end - start_high;
+            signal_high = false;
+            if (high_time > 300) {
+              halfway = false;
+              lastmessage = 0;
+              bitcount = 0;
+              first_low_time = 0;
+              resettime = 0;
+              state = states::RECEIVING;
+            }
         }
         break;
 
