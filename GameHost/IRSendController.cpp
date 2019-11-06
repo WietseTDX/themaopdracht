@@ -18,7 +18,6 @@ void IRSendController::generateMessage() {
   message |= (data << 5);
   uint8_t xor_res = (player ^ data);
   message |= (xor_res & 0x1F);
-  bitPrinter<16, uint16_t>(message);
 }
 
 //====================================
