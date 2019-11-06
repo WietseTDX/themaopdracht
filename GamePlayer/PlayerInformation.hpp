@@ -93,7 +93,7 @@ class PlayerInformation {
   /// \details
   /// write PlayerInformation to hwlib::cout
   friend hwlib::ostream& operator<<(hwlib::ostream& out, const PlayerInformation& playerInformation) {
-    out << "=========================================";
+    out << "=========================================\n";
     out << "Weapon: " << playerInformation.weapon << "\n";
     out << "Health: " << playerInformation.health_points << "\n";
     out << "Player: " << playerInformation.player_number << "\n";
