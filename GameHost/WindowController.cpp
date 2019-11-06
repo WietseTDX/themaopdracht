@@ -32,10 +32,6 @@ void WindowController::main() {
           text_bot << "\f"
                    << "enter new cmd";
           oled.flush();
-        } else {
-          block_mid.clear();
-          text_mid << info.to_show;
-          block_mid.flush();
         }
         state = states::WAIT_FOR_UPDATE;
         break;

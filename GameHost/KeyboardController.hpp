@@ -15,8 +15,9 @@ class KeyboardController : rtos::task<> {
         hwlib::target::pin_out led;
         MainController &main_c;
         hwlib::keypad<17> keypad;
-        char command[10];
+        char command[16];
         char input;
+				unsigned int char_count = 0;
         rtos::clock InputClock;
 
         void ledOnOff();
