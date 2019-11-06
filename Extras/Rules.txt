@@ -1,0 +1,111 @@
+RULES V1.0 
+
+Hoe zien onze namen van variabelen/klassen etc. eruit:
+	int de_naam_ziet_er_zo_uit;
+	class DeNaamZietErZoUit
+	rtos::flag DeNaamZietErZoUitFlag //MOET FLAG AAN HET EINDE HEEBBEN
+	rtos::pool<type> DeNaamZietErZoUitPool //MOET POOL AAN HET EINDE HEBBEN
+	rtos::channel<type, #> DeNaamZietErZoUitChannel //MOET CHANNEL AAN HET EINDE HEBBEN
+	rtos::mutex DeNaamZietErZoUitMutex //MOET MUTEX AAN HET EINDE HEBBEN
+	void deNaamZietErZoUit();
+	enum states = {DE_NAAM_ZIET_ER_ZO_UIT}
+
+Een tab is tab size 2
+
+Klassen zien er zo uit:
+	Template klassen zijn volledig in de hpp file
+	Niet template klassen staat alleen de constructor in de hpp uitgeschreven.
+	Elke functie staat in de hpp file gedeclareerd
+	Elke functie staat in de cpp file gedefineerd
+	Elke control task heeft een eigen hpp en cpp file met zijn bijbehorende klassen.
+
+Functies zien er zo uit:
+	Template functies zijn volledig in de cpp file
+	Niet template klassen staan ook in de cpp file
+	In de cpp file van een klassen moet duidelijk zijn welke functies private en public zijn.
+	Dit doe je met:
+	//========================================
+	//[PRIVATE/PUBLIC/OTHER] FUNCTIONS [CLASSNAME]  (Haal de blokhaken weg)
+	//========================================
+	Other functies zijn functies die alleen worden gebruikt door de task/klasse waarmee je werkt.
+	Functies die door meerdere klassen worden gebruikt moeten in de map: Main, file mainfuntions.cpp en hpp
+	Functies die veel moeten berekenen moeten constexpr zijn.
+
+Comments:
+	In de hpp file worden alle public function, MAIN IS OOK PUBLIC! met doxygen comments uitgelegd.
+	Alle comments staan in het Engels. Een doxygen voorbeeld:
+	/// \brief OLEDController task
+	/// \details
+	/// This task controlls everything what is displayed on the OLED.
+	/// Oledcontroller has 4 window parts. If a Window part needs to be updateted, ........
+	Je kan \n gebruiken om enters te maken in \details.
+	Moeileke functies kan je even commenten om die functie duidelijker te maken.
+	Het is belangrijk om een functie die andere mensen ook gebruiken WEL UITGEBREID te commenten.
+
+Deconstructen:
+	Als je een } neerzet in de code een comment plaatsen met de naam van het gene wat gedeconstruct wordt.
+	Daarnaast staan switch Cases tussen haakjes.
+	Voorbeeld:
+	switch(gozer){
+		case 69:
+			{
+				break;
+			}//case 69
+		case 420:
+			{
+				break;
+			}//case 420
+	}//switch gozer
+	UITZONDERING: Bij het gebruik van if/else if/else achterelkaar is het niet nodig om deconstructor comments te plaatsen.
+	Wel een spatie tussen de deconstructor van de if / else if na de volgende else if/ else.
+
+states:
+	states aangemaakt in de klasse zelf (private) NIET in de main loop
+	variabele states state = DE_NAAM_ZIET_ER_ZO_UIT; aangemaakt in de main loop VOOR de while(true) of for(;;) loop;
+	Je mag zelf bepalen of je while(true) of for(;;) gebruikt voor de loop.
+	case states::DE_NAAM_ZIET_ER_ZO_UIT gebruiken
+
+Includes / defineren / namespace
+	GEEN using namespace std; (gebruik std::)
+	GEEN using namespace hwlib; (gebruik hwlib::)
+	cpp file: 
+		1. #includes (op alfabetische volgorde omdat ik autistisch ben)
+		2. regel vrij
+		3. namespace (dit hoef je zelf niet te doen, dit gaat Stijn doen).
+		4. regel vrij
+		5. begin met je code
+	hpp file:
+		1. #ifndef NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
+		2. #define NAAMVANHPPFILE_HPP //MOET MET _HPP EINDIGEN
+		3. regel vrij
+		4. #includes (op alfabetische volgorde omdat ik autistisch ben)
+		5. regel vrij
+		6. begin met je code
+		7. regel vrij
+		8. #endif //NAAMVANHPPFILE_HPP //Na endif comment en moet met _HPP eindigen
+
+Map structuur:
+	Extras:(M)
+		Alle files die NIET code zijn. Regels/Foto's/Documenten etc.
+	GamePlayer:(M)
+		Alle files die GamePlayer ALLEEN nodig heeft (waaronder een main.cpp)
+		Makefile om Gamplayer te uploaden
+	GameHost:(M)
+		Alle files die GameHost ALLEEN nodig heeft (waaronder een main.cpp)
+		Makefile om Gamehost te uplaoden
+	GamePC:(M)
+		Alle files die de PC ALLEEN nodig heeft (waaronder een  main.cpp)
+		Makefile om de PC te uploaden
+	Main:(M)
+		Alleen cpp en hpp files die in meerdere mapjes nodig zijn. (GEEN main.cpp)
+		Een leuk makefiletje/bashscript die een extra variable mee moet krijgen die dan de juiste makefile runt in het goede mapje.
+	Makefiles van wouter
+	README file. Hoe run je dit programma?
+
+Github:
+	Branchen van de develop:
+	NADAT ALLE REGELS ZIJN VOLDAAN BESPREKEN MET IEDEREEN
+	Na verify mergen. en eventueel merge conflicts oplossen met mensen waarmee het conflict is ontstaan.
+	Dit zou niet moeten gebeuren want niemand werkt aan dezelfde file!!!
+	Na het testen in de develop met alle andere files.
+	Force pushen naar de master. (De master wordt nu de develop) (Je kan nooit mergen in de master!)
