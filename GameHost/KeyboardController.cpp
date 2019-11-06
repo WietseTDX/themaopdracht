@@ -27,8 +27,8 @@ void KeyboardController::main() {
                         hwlib::wait_us(200'000);
                         break;
                     } else if(input == '*'){ 
-                        ledOnOff(); // Als de input * is meot keyboardcontroller meteen het start command senden
                         strcpy(command, "*");
+                        ledOnOff(); // Als de input * is meot keyboardcontroller meteen het start command senden
                         main_c.setCmd(command);
                         state = states::SENDING;
                         hwlib::wait_us(200'000);
@@ -62,17 +62,19 @@ void KeyboardController::main() {
                         ledOnOff();
                         strcpy(command, "#");
                         main_c.setCmd(command);
+                        hwlib::wait_us(200'000);
                     } else if(input == '*'){
                         ledOnOff();
                         strcpy(command, "*");
                         main_c.setCmd(command);
+                        hwlib::wait_us(200'000);
                     } else if(input == 'C'){
                         ledOnOff();
                         strcpy(command, "Clear");
                         main_c.setCmd(command);
                         state = states::IDLE;
+                        hwlib::wait_us(200'000);
                     }
-                    hwlib::wait_us(200'000);
                     break;
                 } // states::SENDING
         } // switch
