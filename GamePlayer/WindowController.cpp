@@ -113,6 +113,12 @@ void WindowController::main() {
             case states::UPDATE_TIME:
             {
                 auto time = info.getTime();
+                if(time == 0 && info.getPlayerNumber() != 0){
+                    display_time << "\f" << " END ";
+                    drawBox(time_window, 79,16);
+                    time_window.flush();
+                    break;
+                }
                 display_time << "\f" << textdisplay[time/600] << textdisplay[time/60%10] << ':' << textdisplay[time%60/10] << textdisplay[time%60%10];
                 drawBox(time_window, 79,16);
                 time_window.flush();

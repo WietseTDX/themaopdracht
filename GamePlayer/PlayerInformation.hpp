@@ -47,7 +47,8 @@ public:
         out << "Health: " << playerInformation.health_points << "\n";
         out << "Player: " << playerInformation.player_number << "\n";
         out << "Hits: { ";
-        for(std::array<uint8_t,2> shot : playerInformation.hits){
+        for(int i = 0; i < playerInformation.index_array; i++){
+            std::array<uint8_t,2> shot = playerInformation.hits[i];
             if(shot[0] == 0){break;}
             out << "[" << shot[0] << ", " << shot[1] << "] ";
         }
