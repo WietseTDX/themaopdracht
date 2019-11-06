@@ -92,18 +92,20 @@ class PlayerInformation {
   /// \details
   /// write PlayerInformation to hwlib::cout
   friend hwlib::ostream& operator<<(hwlib::ostream& out, const PlayerInformation& playerInformation) {
+    out << "=========================================";
     out << "Weapon: " << playerInformation.weapon << "\n";
     out << "Health: " << playerInformation.health_points << "\n";
     out << "Player: " << playerInformation.player_number << "\n";
-    out << "Hits: { ";
+    out << "Hits:\n";
+    int player_points[9] = {0,0,0,0,0,0,0,0,0};
     for (int i = 0; i < playerInformation.index_array; i++) {
       std::array<uint8_t, 2> shot = playerInformation.hits[i];
-      if (shot[0] == 0) {
-        break;
-      }
-      out << "[" << shot[0] << ", " << shot[1] << "] ";
+      player_points[shot[0]-1] += shot[1]+1;
     }
-    out << "}";
+    for(int i = 0; i < 8; i++){
+      out << "  Speler " << i+1 << " heeft in totaal " << player_points[i] << " damage gedaan!\n";
+    }
+    out << "=========================================";
     return out;
   }
 
