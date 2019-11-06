@@ -1,5 +1,5 @@
-#ifndef _STRUCT_DATA
-#define _STRUCT_DATA
+#ifndef STRUCTDATA_HPP
+#define STRUCTDATA_HPP
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -12,4 +12,4 @@ struct StructData {
 };
 
 
-#endif // _STRUCT_DATA
+#endif // STRUCTDATA_HPP

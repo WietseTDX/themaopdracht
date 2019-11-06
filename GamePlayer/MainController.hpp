@@ -1,23 +1,22 @@
 #ifndef _MAIN_CONTROLLER
 #define _MAIN_CONTROLLER
 
-#include "hwlib.hpp"
-#include "rtos.hpp"
-
-//============================
 #include "IRSendController.hpp"
 #include "WindowController.hpp"
-#include "Button.hpp"
-#include "StructData.cpp"
 #include "InputHandler.hpp"
-#include "KeyboardController.hpp"
-//============================
 
+/// @file
 
+////\brief
+///
+///\details
+///
+///
+///
 class MainController : public rtos::task<>, public KeyboardListener, public ButtonListener {
 	rtos::flag ButtonPressedFlag;
 	rtos::pool<int> ButtonIDPool;
-	rtos::channel<StructData, 4> CommandChannel; //4 Omdat de Receiver kan elke 40 ms een bericht ontvangen en je kan niet sneller dan 10x per seconde een kopje indrukken en van de keyboard controller krijgt die een bericht per seconde omdat sneller wel heel lastig is. De main heeft een deadline van 50 ms neem ik aan dat voor de 40 ms van de receiver neemt 2 plekken in en de button een halve plek dat kan niet dus 1 en voor de keyborad ook 1, 1tje er bij voor de veiligheid dus 4 plekken
+	rtos::channel<StructData, 4> CommandChannel; 
 	rtos::timer ShotTimer;
 	rtos::timer BeenShotTimer;
 	rtos::timer BuzzerTimer;

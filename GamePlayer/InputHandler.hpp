@@ -1,8 +1,6 @@
 #ifndef INPUTHANDLER_HPP
 #define INPUTHANDLER_HPP
 
-#include "hwlib.hpp"
-#include "rtos.hpp"
 #include "KeyboardController.hpp"
 #include "Button.hpp"
 

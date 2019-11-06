@@ -1,10 +1,6 @@
 #ifndef IRRECIEVECONTROLLER_HPP
 #define IRRECIEVECONTROLLER_HPP
 
-#include "hwlib.hpp"
-#include "rtos.hpp"
-
-#include "StructData.cpp"
 #include "MainController.hpp"
 
 using hwlib::cout;
@@ -38,8 +34,8 @@ class IRReceiveController : public rtos::task<> {
   uint8_t checkxor;
   uint8_t player;
   uint8_t data;
-  uint8_t lastMathxor;
-  uint8_t checkMathxor;
+  uint8_t last_mathxor;
+  uint8_t check_mathxor;
 
   void sendCommand();
 

@@ -4,7 +4,7 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-#include "StructData.cpp"
+#include "StructData.hpp"
 
 class KeyboardListener {
   public:
