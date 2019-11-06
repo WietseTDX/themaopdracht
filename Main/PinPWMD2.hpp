@@ -3,12 +3,25 @@
 
 #include "hwlib.hpp"
 
+/// @file
+
 /* This template classes is based on 36Khz_d2 class found in hwlib.
  * The template gives a pin if set to 1 it has a freq that is given.
  * You need to fill in the freq in Hz. so 38 kHz = 38000 Hz
  * The second template variabele sets the duty cycle.
  * if you fill in 2 duty cyle = 50%, 4 = 25%, etc
  */
+/// \brief
+/// PinPWMD2
+/// \details
+/// This class implements a PWM pin on pin D2 on the arduino Due.
+/// This template class is based on 36Khz_d2 class found in hwlib.
+/// The template creates a pin_out that if set to 1 it has a freq and duty cycle that is given.
+/// The class is a template. The first template parameter is the frequency in Hz.
+/// The second template parameter is the duty cycle of the PWM signal.
+/// Call example: auto pwm_pin = PinPWMD2<38'000, 2>
+/// This creates a pin a frequency of 38'000 Hz -> 38 kHz.
+/// The duty cycle is 50%: 100% / 2.
 template <signed int M, signed int N>
 class PinPWMD2 : public hwlib::pin_out {
  public:
