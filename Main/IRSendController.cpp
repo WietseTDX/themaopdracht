@@ -1,7 +1,7 @@
 #include "IRSendController.hpp"
 
 //====================================
-// Private functions IRSendController
+// PRIVATE FUNCTIONS IRSendController
 //====================================
 void IRSendController::generateMessage() {
   uint8_t player = PlayerPool.read();
@@ -21,7 +21,7 @@ void IRSendController::generateMessage() {
 }
 
 //====================================
-// Public functions IRSendController
+// PUBLIC FUNCTIONS IRSendController
 //====================================
 void IRSendController::sendMessage(uint8_t player_num, uint8_t data) {
   PlayerPool.write(player_num);
@@ -42,8 +42,8 @@ void IRSendController::main() {
         } else {
         }  // if (wait_trigger) & else
         mess_repeat = 0;
-				state = states::TRANSMIT_MESSAGE;
-				wait_us(100);
+        state = states::TRANSMIT_MESSAGE;
+        wait_us(100);
       }
       case states::TRANSMIT_MESSAGE:
         sending = true;
@@ -65,7 +65,7 @@ void IRSendController::main() {
               transmit_state = states_transmit::LOW_WAIT;
               break;
             case states_transmit::LOW_WAIT:
-						ir_led.write(0);
+              ir_led.write(0);
               if (bit) {
                 SignalTimer.set(short_wait);
               } else {
@@ -80,13 +80,14 @@ void IRSendController::main() {
               break;
             default: cout << "ERROR: IRSender transmitswitch failed."; break;
           }  // switch transmit_state
-        }    // while (state == states::TRANSMIT_MESSAGE)
+        }    // while (sending)
         mess_repeat++;
         if (mess_repeat == 2) {
           state = states::WAIT_FOR_FLAG;
-        } else{
-					wait_ms(3);
-				}
+        } else {
+          SignalTimer.set(3000);
+          wait(SignalTimer);
+        }
         break;
       default: cout << "ERROR: IRSender switch failed."; break;
     }  // switch state

@@ -1,5 +1,8 @@
 #include "WindowController.hpp"
 
+//========================================
+// PRIVATE FUNCTIONS WindowController
+//========================================
 void WindowController::main() {
   state = states::WAIT_FOR_UPDATE;
   for (;;) {

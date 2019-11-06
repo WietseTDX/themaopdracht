@@ -1,25 +1,14 @@
 #include "MainController.hpp"
 
-/// \brief
-/// public function to be used by other rtos tasks to pass a function parameter
-/// \details
-/// setCmd can be used by other tasks to send a command to MainController so it can be processed and sent(if possible)
-/// from MainController.
-void MainController::setCmd(char* command) {
-  CommandPool.write(command);
-  CommandFlag.set();
-}
-
-/// \brief
-/// A private function to convert a char command to an integer value
+//========================================
+// PRIVATE FUNCTIONS MainController
+//========================================
 int MainController::charsToInt(char left, char right) {
   int l = int(left - '0') * 10;
   int r = int(right - '0');
   return l + r;
 }
 
-/// \brief
-/// A private function that is used to decode and check a command to see if it is valid
 void MainController::verifyCommand() {
   strcpy(screen_data.to_show, command);
   if (command[1] == 'A') {
@@ -40,8 +29,6 @@ void MainController::verifyCommand() {
   }
 }
 
-/// \brief
-/// À private function to check which command has to be sent
 void MainController::commandActions() {
   if (screen_data.type == 1 || screen_data.type == 3) {
     if (set_command[0] == '*') {
@@ -62,8 +49,14 @@ void MainController::commandActions() {
   }    // type == 1 || type == 3
 }
 
-/// \brief
-/// MainController's main loop
+//========================================
+// PUBLIC FUNCTIONS MainController
+//========================================
+void MainController::setCmd(char* command) {
+  CommandPool.write(command);
+  CommandFlag.set();
+}
+
 void MainController::main() {
   state = states::IDLE;
   for (;;) {
@@ -76,7 +69,6 @@ void MainController::main() {
         state = states::COMMAND_SET;
         break;
       }  // states::IDLE
-
       case states::COMMAND_SET: {
         window.update(screen_data);
         wait(CommandFlag);
@@ -90,7 +82,6 @@ void MainController::main() {
         }
         break;
       }  // states::COMMAND_SET
-
-    }  // switch
+    }    // switch
   }
 }
