@@ -38,8 +38,10 @@ void IRSendController::main() {
       case states::WAIT_FOR_FLAG: {
         auto wait_trigger = wait(NewMessageFlag + RepeatFlag);
         if (wait_trigger == NewMessageFlag) {
+          // cout << "GENERATE" << endl;
           generateMessage();
         } else {
+					// cout << "RepeatSend" << endl;
         }  // if (wait_trigger) & else
         mess_repeat = 0;
 				state = states::TRANSMIT_MESSAGE;
@@ -80,12 +82,13 @@ void IRSendController::main() {
               break;
             default: cout << "ERROR: IRSender transmitswitch failed."; break;
           }  // switch transmit_state
-        }    // while (state == states::TRANSMIT_MESSAGE)
+        }    // while (sending)
         mess_repeat++;
         if (mess_repeat == 2) {
           state = states::WAIT_FOR_FLAG;
         } else{
-					wait_ms(3);
+					SignalTimer.set(3000);
+					wait(SignalTimer);
 				}
         break;
       default: cout << "ERROR: IRSender switch failed."; break;

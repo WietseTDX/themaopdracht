@@ -8,7 +8,6 @@
 using hwlib::cout;
 using hwlib::endl;
 using hwlib::wait_us;
-using hwlib::wait_ms;
 
 /// @file
 
@@ -64,7 +63,8 @@ class IRSendController : rtos::task<> {
         NewMessageFlag(this, "NewMessageFlag"),
         RepeatFlag(this, "RepeatFlag"),
         SignalTimer(this, "SignalTimer") {
-    cout << "AJA" << endl;
+    // ir_led.write(1);
+    // hwlib::wait_ms(100);
     ir_led.write(0);
   }
 
