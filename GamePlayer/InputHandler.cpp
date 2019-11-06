@@ -1,4 +1,4 @@
-#include "ButtonHandeler.hpp"
+#include "InputHandler.hpp"
 
 void InputHandler::main() {
   while (true) {

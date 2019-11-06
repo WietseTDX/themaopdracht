@@ -1,9 +1,9 @@
-#ifndef _BUTTONHANDLER
-#define _BUTTONHANDLER
+#ifndef INPUTHANDLER_HPP
+#define INPUTHANDLER_HPP
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "KeyboardControl.hpp"
+#include "KeyboardController.hpp"
 #include "Button.hpp"
 
 
@@ -40,4 +40,4 @@ class InputHandler : public rtos::task<> {
   void addKeyboard(KeyboardController *object);
 };  
 
-#endif // _BUTTONHANDLER
+#endif // INPUTHANDLER_HPP

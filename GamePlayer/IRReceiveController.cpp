@@ -1,10 +1,10 @@
-#include "receiver.hpp"
+#include "IRReceiveController.hpp"
 
 //==================================
 // Private functions "IrReceiveController"
 //==================================
 
-void IrReceiveController::sendCommand() {
+void IRReceiveController::sendCommand() {
   uint16_t to_send = 0x0;
   to_send |= (player << 5);
   to_send |= data;  
@@ -12,14 +12,14 @@ void IrReceiveController::sendCommand() {
   main_c.translateCmd(StructData(2, to_send));
 };
 
-void IrReceiveController::messageDecode(uint16_t &to_decode) {
+void IRReceiveController::messageDecode(uint16_t &to_decode) {
   uint16_t message = (to_decode >> 5);
   data = (message & 0x001F);
   message = (message >> 5);
   player = (message & 0x001F);
 }
 
-void IrReceiveController::checkingMessage() {
+void IRReceiveController::checkingMessage() {
   if (lastmessage == checkmessage) {
     cout << "check: 1" << endl;
     uint16_t shiftcheck = checkmessage;
@@ -60,7 +60,7 @@ void IrReceiveController::checkingMessage() {
 // Public funtions "IrReceiveController"
 //==================================
 
-void IrReceiveController::main() {
+void IRReceiveController::main() {
   state = states::IDLE;
   hwlib::wait_ms(100);
   cout << "START" << endl;

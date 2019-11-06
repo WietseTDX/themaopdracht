@@ -1,5 +1,5 @@
 #include "MainController.hpp"
-#include "receiver.hpp"
+#include "IRReceiveController.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
@@ -13,7 +13,7 @@ int main() {
     MainController b = MainController(a, oled);
 
     hwlib::target::pins receive = hwlib::target::pins::d22;
-    IrReceiveController ir_receive = IrReceiveController(receive, b);
+    IRReceiveController ir_receive = IRReceiveController(receive, b);
 
     rtos::run();
 }

@@ -1,5 +1,5 @@
-#ifndef RECEIVER_HPP
-#define RECEIVER_HPP
+#ifndef IRRECIEVECONTROLLER_HPP
+#define IRRECIEVECONTROLLER_HPP
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -10,7 +10,7 @@
 using hwlib::cout;
 using hwlib::endl;
 
-class IrReceiveController : public rtos::task<> {
+class IRReceiveController : public rtos::task<> {
  private:
   enum states { IDLE, RECEIVING };
   states state = IDLE;
@@ -59,9 +59,9 @@ class IrReceiveController : public rtos::task<> {
   }
 
  public:
-  IrReceiveController(due::pins sensor, MainController & main_c) : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
+  IRReceiveController(due::pins sensor, MainController & main_c) : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
 
   void main();
 };
 
-#endif  // RECEIVER_HPP
+#endif  // IRRECIEVECONTROLLER_HPP

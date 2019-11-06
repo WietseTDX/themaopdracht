@@ -1,5 +1,5 @@
-#ifndef _KEYBOARD_CONTROL
-#define _KEYBOARD_CONTROL
+#ifndef KEYBOARDCONTOLLER_HPP
+#define KEYBOARDCONTOLLER_HPP
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -51,4 +51,4 @@ class KeyboardController {
   /// add a button listener with the right object to send the right message to the right object
   void addKeyboardListener(KeyboardListener *object);
 };
-#endif // _KEYBOARD_CONTROL
+#endif // KEYBOARDCONTOLLER_HPP

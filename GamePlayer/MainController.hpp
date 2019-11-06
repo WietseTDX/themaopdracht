@@ -9,8 +9,8 @@
 #include "WindowController.hpp"
 #include "Button.hpp"
 #include "StructData.cpp"
-#include "ButtonHandeler.hpp"
-#include "KeyboardControl.hpp"
+#include "InputHandler.hpp"
+#include "KeyboardController.hpp"
 //============================
 
 
@@ -24,11 +24,11 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 	rtos::clock PeriodFlag;
 
 	PlayerInformation<100> info;
-	WindowController Window;
 
 	hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d12);
 	
 	
+	WindowController Window;
 	IRSendController IrSend;
 
 	InputHandler handler;

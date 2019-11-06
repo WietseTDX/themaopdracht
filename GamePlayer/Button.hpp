@@ -1,5 +1,5 @@
-#ifndef _BUTTON
-#define _BUTTON
+#ifndef BUTTON_HPP
+#define BUTTON_HPP
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -15,10 +15,10 @@ class Button{
 private:
     hwlib::target::pin_in & button;
     unsigned int index_listener = 0;
-    int id;
+    unsigned int id;
     ButtonListener *button_listeners[];
 public:
-    Button(hwlib::target::pin_in & button, int id):
+    Button(hwlib::target::pin_in& button, unsigned int id):
     button(button),
     id(id)
     {}
@@ -28,4 +28,4 @@ public:
     void update();
 };
 
-#endif // _BUTTON
+#endif // BUTTON_HPP

@@ -1,4 +1,4 @@
-#include "KeyboardControl.hpp"
+#include "KeyboardController.hpp"
 
 void KeyboardController::update() {
   char key = keypad.pressed();

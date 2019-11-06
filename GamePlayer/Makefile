@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := Button.cpp ButtonHandeler.cpp IRSendController.cpp KeyboardControl.cpp MainController.cpp receiver.cpp StructData.cpp WindowController.cpp
+SOURCES := Button.cpp InputHandler.cpp IRSendController.cpp KeyboardController.cpp MainController.cpp IRReceiveController.cpp StructData.cpp WindowController.cpp
 
 # header files in this project
-HEADERS := Button.hpp ButtonHandeler.hpp IRSendController.hpp KeyboardControl.hpp MainController.hpp receiver.hpp WindowController.hpp PlayerInformation.hpp PinPWMD2.hpp
+HEADERS := Button.hpp InputHandler.hpp IRSendController.hpp KeyboardController.hpp MainController.hpp IRReceiveController.hpp WindowController.hpp PlayerInformation.hpp PinPWMD2.hpp
 
 # other places to look for files for this project
 SEARCH  := 
