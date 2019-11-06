@@ -11,7 +11,7 @@
 /// \details
 /// This task controlls everything what is displayed on the OLED.
 /// WindowController has 4 window parts. If a Window part needs to be updateted,
-/// another class can call 1 of the 4 different functions. The flags en pool will be set.
+/// another class can call the update function with an intege as parameter. The Channel will be written.
 /// The corresponding state will be activated and updates it corresponding window part.
 
 class WindowController : public rtos::task<> {
@@ -28,7 +28,8 @@ private:
     hwlib::terminal_from        display_time    = hwlib::terminal_from( time_window,          font16 );
     hwlib::terminal_from        display_health  = hwlib::terminal_from( health_window,        font8  );
     hwlib::terminal_from        display_player  = hwlib::terminal_from( player_number_window, font16 );
-    hwlib::terminal_from        display_weapon  = hwlib::terminal_from( weapon_window,        font16 );
+    hwlib::terminal_from        display_weapon  = hwlib::terminal_from( weapon_window,        font8 );
+    int current_weapon = -1;
     void drawBox(hwlib::window_part_t & window, int x, int y);
 
 public:
@@ -55,9 +56,9 @@ public:
     /// \brief 
     /// main task loop of WindowController
     /// \details
-    /// state WAIT_FOR_CHANGE waits for a flag to be set.\n
-    /// If a flag is set, the corresponding state will be activated.\n
-    /// That state updates the corresponding window with the value in the OledPool.
+    /// state WAIT_FOR_CHANGE waits for the Channel\n
+    /// If a channel is written, the corresponding state will be activated.\n
+    /// That state updates the corresponding window with the value in the Channel.
     void main() override;
 };
 
