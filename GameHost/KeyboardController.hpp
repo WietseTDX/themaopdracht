@@ -18,6 +18,8 @@ class KeyboardController : rtos::task<> {
         char command[10];
         char input;
         rtos::clock InputClock;
+
+        void ledOnOff();
     
     public:
         KeyboardController(hwlib::matrix_of_switches& matrix, MainController &main, hwlib::target::pins ledpin):
