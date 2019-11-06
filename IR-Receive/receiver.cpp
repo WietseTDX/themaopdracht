@@ -102,7 +102,7 @@ void IrReceiveController::main() {
           lastmessage = 0;
           halfway = true;
           signal_high = false;
-          hwlib::wait_us(3'000);
+          hwlib::wait_us(3000);
         }
         if (bitcount == 32) {
           checkingMessage();
@@ -145,9 +145,12 @@ void IrReceiveController::main() {
             }
             signal_high = false;
             bitcount++;
-          } else {
-            resettime = hwlib::now_us() - start_low;
-            if (resettime > 4000) {
+          } else if(bitcount != 16){
+            uint64_t time_now = hwlib::now_us();
+            resettime = time_now - start_low;
+            if (resettime > 4000+offset) {
+              cout << "reset bitch: " << resettime << '-' << bitcount << endl;
+              cout << "now: " << time_now << " reset: " << start_low << endl;
               high_time = 0;
               signal_high = false;
               state = states::IDLE;
