@@ -79,6 +79,6 @@ void WindowController::main() {
 }  // main()
 
 void WindowController::update(const WindowStruct& new_info) {
-  UpdateFlag.set();
   WindowPool.write(new_info);
+  UpdateFlag.set();
 }  // update(const WindowStruct& new_info)
