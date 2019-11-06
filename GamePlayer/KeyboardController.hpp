@@ -3,15 +3,23 @@
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
-
 #include "StructData.hpp"
 
+///@file
+
+///\brief
+/// Interface KeyboardListener
+///\details
+/// This class is a interface for a KeyboardController
 class KeyboardListener {
   public:
   virtual void translateCmd(StructData info, int id) = 0;
 };
 
-
+///\brief
+/// KeyboardController
+///\details
+/// KeyboardController gets the keypresses and gives to MainController
 class KeyboardController {
   hwlib::target::pin_oc out0 = hwlib::target::pin_oc(hwlib::target::pins::d7);
   hwlib::target::pin_oc out1 = hwlib::target::pin_oc(hwlib::target::pins::d8);

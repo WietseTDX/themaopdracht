@@ -1,5 +1,81 @@
 #include "MainController.hpp"
 
+//==================================
+// PRIVATE FUNCTIONS MainController
+//==================================
+int MainController::timeWaitShot() {
+	int weapon = info.getWeapon();
+	int wait = 500000;
+	wait +=500000 * weapon;
+	return wait;
+}
+
+int MainController::calculateDamage(int data) {
+	return (data * 1) + 1;
+}
+void MainController::runCommand(StructData command) {
+	if(command.to_change == 2){ //change health
+	int player = (command.data >> 5) & 0x001F;
+	if (player != 0 && (!been_shot) && player != info.getPlayerNumber()) {
+		int data = command.data & 0x001F;
+		buzzer.write(1);
+		BuzzerTimer.set(250'000);
+		info.addHit(player, data);
+		BeenShotTimer.set(3'000'000);
+		been_shot = true;
+		int damage = calculateDamage(data);
+		int health = info.getHealthPoints();
+		health -= damage;
+		if (health <= 0){ health = 0;}
+		info.setHealthPoints(health);
+		Window.update(2);
+	} 
+  }else if(command.to_change == 3){ //change weapon
+    info.setWeapon(command.data);
+    Window.update(3);
+  }
+}
+
+bool MainController::startGame() {
+	StructData command = CommandChannel.read();
+	if (command.to_change == 2) { // change time or start game
+		int data = command.data & 0x001F;
+		int player = (command.data >> 5) & 0x001F;
+		if (player == 0) {
+			if (((data >> 4) & 0x01)) {
+				info.setTime((data & 0b000001111) * 60);
+				Window.update(0);
+				hwlib::cout << "Startgame set time: " << info.getTime() << hwlib::endl;
+				return false;
+			}
+			if (data == 0) {
+				if (!(info.getPlayerNumber() == 0)) {
+					return true;
+				}
+				return false;
+			}
+		}
+	}
+	else if(command.to_change == 1){//change player number
+		info.setPlayerNumber(command.data);
+		Window.update(1);
+	}
+  return false;
+}
+
+//==================================
+// PUBLIC FUNCTIONS MainController
+//==================================
+void MainController::buttonPressed(int button) {
+	ButtonIDPool.write(button);
+	ButtonPressedFlag.set();
+}
+void MainController::translateCmd(StructData data, int id) {
+	if (id == keyboards::keypad) {
+		CommandChannel.write(data);
+	}
+}
+
 void MainController::main() {
 	while (true) {
 		switch (state) {
@@ -70,77 +146,3 @@ void MainController::main() {
 	} // while (true)
 }
 
-
-void MainController::buttonPressed(int button) {
-	ButtonIDPool.write(button);
-	ButtonPressedFlag.set();
-}
-void MainController::translateCmd(StructData data, int id) {
-	if (id == keyboards::keypad) {
-		CommandChannel.write(data);
-	}
-}
-
-
-//=====================//
-//   interne functies  //
-//=====================//
-int MainController::timeWaitShot() {
-	int weapon = info.getWeapon();
-	int wait = 500000;
-	wait +=500000 * weapon;
-	return wait;
-}
-
-int MainController::calculateDamage(int data) {
-	return (data * 1) + 1;
-}
-void MainController::runCommand(StructData command) {
-	if(command.to_change == 2){ //change health
-	int player = (command.data >> 5) & 0x001F;
-	if (player != 0 && (!been_shot) && player != info.getPlayerNumber()) {
-		int data = command.data & 0x001F;
-		buzzer.write(1);
-		BuzzerTimer.set(250000);
-		info.addHit(player, data);
-		BeenShotTimer.set(3000000);
-		been_shot = true;
-		int damage = calculateDamage(data);
-		int health = info.getHealthPoints();
-		health -= damage;
-		if (health <= 0){ health = 0;}
-		info.setHealthPoints(health);
-		Window.update(2);
-	} 
-  }else if(command.to_change == 3){ //change weapon
-    info.setWeapon(command.data);
-    Window.update(3);
-  }
-}
-
-bool MainController::startGame() {
-	StructData command = CommandChannel.read();
-	if (command.to_change == 2) { // change time or start game
-		int data = command.data & 0x001F;
-		int player = (command.data >> 5) & 0x001F;
-		if (player == 0) {
-			if (((data >> 4) & 0x01)) {
-				info.setTime((data & 0b000001111) * 60);
-				Window.update(0);
-				hwlib::cout << "Startgame set time: " << info.getTime() << hwlib::endl;
-				return false;
-			}
-			if (data == 0) {
-				if (!(info.getPlayerNumber() == 0)) {
-					return true;
-				}
-				return false;
-			}
-		}
-	}
-	else if(command.to_change == 1){//change player number
-		info.setPlayerNumber(command.data);
-		Window.update(1);
-	}
-  return false;
-}

@@ -13,7 +13,6 @@
 /// WindowController has 4 window parts. If a Window part needs to be updateted,
 /// another class can call the update function with an intege as parameter. The Channel will be written.
 /// The corresponding state will be activated and updates it corresponding window part.
-
 class WindowController : public rtos::task<> {
 private:
     hwlib::window & window;

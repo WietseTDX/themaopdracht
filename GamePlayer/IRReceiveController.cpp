@@ -1,14 +1,12 @@
 #include "IRReceiveController.hpp"
 
 //==================================
-// Private functions "IrReceiveController"
+// PRIVATE FUNCTIONS IrReceiveController
 //==================================
-
 void IRReceiveController::sendCommand() {
   uint16_t to_send = 0x0;
   to_send |= (player << 5);
   to_send |= data;
-  cout << "total: " << to_send << " player: " << player << " data: " << data << endl;
   main_c.translateCmd(StructData(2, to_send));
 };
 
@@ -53,9 +51,8 @@ void IRReceiveController::checkingMessage() {
 };
 
 //==================================
-// Public funtions "IrReceiveController"
+// PUBLIC FUNCTIONS IrReceiveController
 //==================================
-
 void IRReceiveController::main() {
   state = states::IDLE;
   hwlib::wait_ms(100);

@@ -1,30 +1,46 @@
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 
+#include "StructData.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "StructData.hpp"
 
-class ButtonListener{
-public:
-    virtual void buttonPressed(int button_id) = 0;
+/// @file
+
+///\brief
+/// Interface ButtonListener
+///\details
+/// This class is a interface for a buttons.
+class ButtonListener {
+ public:
+  virtual void buttonPressed(int button_id) = 0;
 };
 
-class Button{
-private:
-    hwlib::target::pin_in & button;
-    unsigned int index_listener = 0;
-    unsigned int id;
-    ButtonListener *button_listeners[];
-public:
-    Button(hwlib::target::pin_in& button, unsigned int id):
-    button(button),
-    id(id)
-    {}
+///\brief
+/// Button
+///\details
+/// This class implements a button
+class Button {
+ private:
+  hwlib::target::pin_in &button;
+  unsigned int index_listener = 0;
+  unsigned int id;
+  ButtonListener *button_listeners[];
 
-    void addButtonListener(ButtonListener *object);
+ public:
+  Button(hwlib::target::pin_in &button, unsigned int id) : button(button), id(id) {}
 
-    void update();
+  ///\brief
+  /// addButtonListener
+  ///\details
+  /// Add ButtonListener class to the ButtonListener array.
+  void addButtonListener(ButtonListener *object);
+
+  ///\brief
+  /// update
+  ///\details
+  /// call the buttonPressed functions on all the ButtonListeners classes in the array
+  void update();
 };
 
-#endif // BUTTON_HPP
+#endif  // BUTTON_HPP

@@ -1,5 +1,8 @@
 #include "KeyboardController.hpp"
 
+//==================================
+// PUBLIC FUNCTIONS KeyboardController
+//==================================
 void KeyboardController::update() {
   char key = keypad.pressed();
   if (key != '\0') {

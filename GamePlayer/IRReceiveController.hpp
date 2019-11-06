@@ -6,6 +6,13 @@
 using hwlib::cout;
 using hwlib::endl;
 
+///@file
+
+///\brief
+/// IRReceiveController
+///\details
+/// This class implements the IR-protocol (receive) given in the casus lasertag.
+/// If a message is received it passes the message to MainController 
 class IRReceiveController : public rtos::task<> {
  private:
   enum states { IDLE, RECEIVING };
@@ -37,26 +44,37 @@ class IRReceiveController : public rtos::task<> {
   uint8_t last_mathxor;
   uint8_t check_mathxor;
 
+  ///\brief
+  /// sendCommand
+  ///\details
+  /// this function generates a uint16_t that is send to MainController
   void sendCommand();
 
+  ///\brief
+  /// messageDecode
+  ///\details
+  /// This function gets the player and data from a uint16_t
   void messageDecode(uint16_t &to_decode);
 
+  ///\brief
+  /// checkingMessage
+  ///\details
+  /// This function checks if the message is correct.
+	/// It checks the repeat and xors
   void checkingMessage();
 
-  template <int N, typename F>
-  void messageBitPrinter(F printing) {
-    cout << "bit representation: " << endl;
-    for (int i = N - 1; i >= 0; i--) {
-      bool p = printing & (0x01 << i);
-      cout << p;
-      if (i % 4 == 0) cout << ' ';
-    }
-    cout << endl;
-  }
-
  public:
-  IRReceiveController(due::pins sensor, MainController & main_c) : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
+  ///\brief
+  /// Constructor IRReceiveController
+  ///\details
+  /// This function returns a IRReceiveController
+  IRReceiveController(due::pins sensor, MainController &main_c)
+      : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
 
+  ///\brief
+  /// main rtos
+  ///\details
+  /// This function contains all the logic for the IRReceiveController
   void main();
 };
 

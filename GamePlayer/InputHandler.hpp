@@ -1,10 +1,15 @@
 #ifndef INPUTHANDLER_HPP
 #define INPUTHANDLER_HPP
 
-#include "KeyboardController.hpp"
 #include "Button.hpp"
+#include "KeyboardController.hpp"
 
+///@file
 
+///\brief
+/// InputHandler
+///\details
+/// rtos task that calls the update function on all input objects
 class InputHandler : public rtos::task<> {
   rtos::clock PeriodFlag;
   int place_b = 0;
@@ -12,18 +17,12 @@ class InputHandler : public rtos::task<> {
   KeyboardController *keyboard[2];
   Button *button[2];
 
-  public:
+ public:
   /// \brief
   /// Constructor
   /// \details
-  /// initiate all the rots objects
+  /// initiate all the rtos objects
   InputHandler() : task("InputHandler"), PeriodFlag(this, 100000, "PeriodFlag") {}
-
-  /// \brief
-  /// The main function
-  /// \details
-  /// The main functions of the code with all the states
-  void main() override;
 
   /// \brief
   /// Add a button object
@@ -32,10 +31,16 @@ class InputHandler : public rtos::task<> {
   void addButton(Button *object);
 
   /// \brief
-  /// Add a KeyboardController object 
+  /// Add a KeyboardController object
   /// \details
   /// Add a Keyboar to the update cycle
   void addKeyboard(KeyboardController *object);
-};  
 
-#endif // INPUTHANDLER_HPP
+  /// \brief
+  /// The main function
+  /// \details
+  /// The main functions of the code with all the states
+  void main() override;
+};
+
+#endif  // INPUTHANDLER_HPP
