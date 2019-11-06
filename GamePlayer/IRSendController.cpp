@@ -38,10 +38,8 @@ void IRSendController::main() {
       case states::WAIT_FOR_FLAG: {
         auto wait_trigger = wait(NewMessageFlag + RepeatFlag);
         if (wait_trigger == NewMessageFlag) {
-          cout << "GENERATE" << endl;
           generateMessage();
         } else {
-					cout << "RepeatSend" << endl;
         }  // if (wait_trigger) & else
         mess_repeat = 0;
 				state = states::TRANSMIT_MESSAGE;

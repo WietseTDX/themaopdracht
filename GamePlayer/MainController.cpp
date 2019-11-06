@@ -31,7 +31,6 @@ void MainController::main() {
 					if (ButtonIDPool.read() == buttons::shoot_trigger && (!shot)) {
 						IrSend.sendMessage(info.getPlayerNumber(), info.getWeapon());
 						shot = true;
-						hwlib::cout << "ButtonPressed" << hwlib::endl;
 						ShotTimer.set(timeWaitShot());
 						buzzer.write(1);
 						BuzzerTimer.set(100000);
@@ -48,9 +47,11 @@ void MainController::main() {
 					}
 				}
 				if (event == PeriodFlag) {
-					info.setTime(info.getTime() - 1);
+					info.setTime(info.getTime() - 1); 
 					Window.update(0);
 					if (info.getTime() <= 0) {
+						Window.update(0);
+						hwlib::wait_ms(350);
 						state = states::WAIT_FOR_PC;
 					}
 				}
@@ -77,7 +78,6 @@ void MainController::buttonPressed(int button) {
 void MainController::translateCmd(StructData data, int id) {
 	if (id == keyboards::keypad) {
 		CommandChannel.write(data);
-		hwlib::cout << "translateCmd to change: " << data.to_change << " Data: " << data.data << hwlib::endl;
 	}
 }
 
