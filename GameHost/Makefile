@@ -15,7 +15,7 @@ SOURCES := KeyboardController.cpp MainController.cpp WindowController.cpp IRSend
 HEADERS := KeyboardController.hpp MainController.hpp WindowController.hpp IRSendController.hpp PinPWMD2.hpp GameRules.hpp
 
 # other places to look for files for this project
-SEARCH  := 
+SEARCH  := ../Main/
 
 # set RELATIVE to the next higher directory and defer to the Makefile.due
 RELATIVE := $(RELATIVE)../

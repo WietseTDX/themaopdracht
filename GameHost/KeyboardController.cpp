@@ -1,5 +1,8 @@
 #include "KeyboardController.hpp"
 
+//========================================
+// PRIVATE FUNCTIONS KeyboardController
+//========================================
 void KeyboardController::ledOnOff() {
   led.write(1);
   led.flush();
@@ -8,10 +11,9 @@ void KeyboardController::ledOnOff() {
   led.flush();
 }
 
-/// \brief
-/// KeyboardController's main loop
-/// \details
-/// Every registered keypress activates an LED to show the user the keypress was registered.
+//========================================
+// PUBLIC FUNCTIONS KeyboardController
+//========================================
 void KeyboardController::main() {
   state = states::IDLE;
   for (;;) {
@@ -23,15 +25,15 @@ void KeyboardController::main() {
           char_count++;
           strcpy(command, "C");
           ledOnOff();
+          wait_ms(no_register_time);
           state = states::RECEIVING;
-          hwlib::wait_us(200'000);
           break;
         } else if (input == '*') {
           strcpy(command, "*");
-          ledOnOff();  // Als de input * is meot keyboardcontroller meteen het start command senden
+          ledOnOff();  // Als de input * is moet keyboardcontroller meteen naar SENDING state
           main_c.setCmd(command);
+          wait_ms(no_register_time);
           state = states::SENDING;
-          hwlib::wait_us(200'000);
           break;
         }
         break;
@@ -43,14 +45,14 @@ void KeyboardController::main() {
                              // naar de sending state
           ledOnOff();
           main_c.setCmd(command);
+          wait_ms(no_register_time);
           state = states::SENDING;
-          hwlib::wait_us(200'000);
           break;
         } else if (input != '\0' && char_count < 16) {
           char_count++;
           ledOnOff();
           strncat(command, &input, 1);
-          hwlib::wait_us(200'000);
+          wait_ms(no_register_time);
           break;
         }
         break;
@@ -62,19 +64,19 @@ void KeyboardController::main() {
           ledOnOff();
           strcpy(command, "#");
           main_c.setCmd(command);
-          hwlib::wait_us(200'000);
+          wait_ms(no_register_time);
         } else if (input == '*') {
           ledOnOff();
           strcpy(command, "*");
           main_c.setCmd(command);
-          hwlib::wait_us(200'000);
+          wait_ms(no_register_time);
         } else if (input == 'C') {
           char_count = 0;
           ledOnOff();
           strcpy(command, "Clear");
           main_c.setCmd(command);
           state = states::IDLE;
-          hwlib::wait_us(200'000);
+          wait_ms(no_register_time);
         }
         break;
       }  // states::SENDING

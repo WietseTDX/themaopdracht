@@ -5,12 +5,6 @@
 
 /// @file
 
-/* This template classes is based on 36Khz_d2 class found in hwlib.
- * The template gives a pin if set to 1 it has a freq that is given.
- * You need to fill in the freq in Hz. so 38 kHz = 38000 Hz
- * The second template variabele sets the duty cycle.
- * if you fill in 2 duty cyle = 50%, 4 = 25%, etc
- */
 /// \brief
 /// PinPWMD2
 /// \details
