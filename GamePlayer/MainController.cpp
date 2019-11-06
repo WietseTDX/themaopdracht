@@ -34,7 +34,7 @@ void MainController::main() {
 						hwlib::cout << "ButtonPressed" << hwlib::endl;
 						ShotTimer.set(timeWaitShot());
 						buzzer.write(1);
-						BuzzerTimer.set(500000);
+						BuzzerTimer.set(100000);
 					}
 				}
 				if (event == BuzzerTimer) {
@@ -98,10 +98,10 @@ int MainController::calculateDamage(int data) {
 void MainController::runCommand(StructData command) {
 	if(command.to_change == 2){ //change health
 	int player = (command.data >> 5) & 0x001F;
-	if (player != 0 && (!been_shot)) {
+	if (player != 0 && (!been_shot) && player != info.getPlayerNumber()) {
 		int data = command.data & 0x001F;
 		buzzer.write(1);
-		BuzzerTimer.set(1000000);
+		BuzzerTimer.set(250000);
 		info.addHit(player, data);
 		BeenShotTimer.set(3000000);
 		been_shot = true;
