@@ -35,13 +35,13 @@ class PlayerInformation {
   /// getWeapon
   ///\details
   /// return weapon
-	uint8_t getWeapon() { return weapon; }
+  uint8_t getWeapon() { return weapon; }
 
   ///\brief
   /// setHealthPoints
   ///\details
   ///  max health_points = N. everything above N gets set to N.
-	void setHealthPoints(uint16_t i) {
+  void setHealthPoints(uint16_t i) {
     if (i > N) i = N;
     health_points = i;
   }
@@ -50,14 +50,15 @@ class PlayerInformation {
   /// getHeathPoints
   ///\details
   /// return health_points
-	uint16_t getHealthPoints() { return health_points; }
+  uint16_t getHealthPoints() { return health_points; }
 
   ///\brief
   /// setPlayerNumber
   ///\details
   /// max player_number = 9. everything above 9 gets set to 9.
   void setPlayerNumber(uint8_t i) {
-    if (player_number > 9) i = 9;
+    if (i > 9) i = 9;
+    if (i == 0) i = 1;
     player_number = i;
   }
 
@@ -109,17 +110,30 @@ class PlayerInformation {
     return out;
   }
 
-	/// \brief
-	/// getTime
-	/// \details
-	/// return the time
+  /// \brief
+  /// getTime
+  /// \details
+  /// return the time
   int getTime() { return time; }
 
-	/// \brief
-	/// setTime
-	/// \details
-	/// set the time
+  /// \brief
+  /// setTime
+  /// \details
+  /// set the time
   void setTime(int i) { time = i; }
+
+  /// \brief
+  /// restPlayer
+  /// \details
+  /// this function resets the PlayerInformation class
+  void resetPlayer() {
+    weapon = 0;
+    health_points = N;
+    player_number = 0;
+    hits = {};
+    index_array = 0;
+    time = 0;
+  }
 };
 
 #endif  // PLAYERINFORMATION_HPP

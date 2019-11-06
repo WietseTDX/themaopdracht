@@ -5,6 +5,8 @@
 #include "InputHandler.hpp"
 #include "WindowController.hpp"
 
+using hwlib::cout;
+
 /// @file
 
 ////\brief
@@ -25,7 +27,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 
   hwlib::target::pin_out buzzer = hwlib::target::pin_out(hwlib::target::pins::d12);
 
-  WindowController Window;
+  WindowController window;
   IRSendController IrSend;
   InputHandler handler;
 
@@ -78,7 +80,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
         BeenShotTimer(this, "BeenShotTimer"),
         BuzzerTimer(this, "BuzzerTimer"),
         PeriodFlag(this, 1000000, "PeriodFlag"),
-        Window(w, info) {
+        window(w, info) {
     handler.addKeyboard(&keyboard);
     handler.addButton(&button);
     keyboard.addKeyboardListener(this);

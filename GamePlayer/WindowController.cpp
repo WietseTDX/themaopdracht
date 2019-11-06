@@ -194,6 +194,7 @@ void WindowController::main() {
           }
           current_weapon = 1;
         } else if (weapon_number <= 9 && current_weapon != 2) {
+					weapon_window.clear();
           hwlib::line deagle_array[31] = {
               hwlib::line(hwlib::xy(8, 4), hwlib::xy(8, 8)),     hwlib::line(hwlib::xy(9, 4), hwlib::xy(9, 11)),
               hwlib::line(hwlib::xy(38, 4), hwlib::xy(43, 4)),   hwlib::line(hwlib::xy(10, 5), hwlib::xy(47, 5)),

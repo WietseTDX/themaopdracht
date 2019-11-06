@@ -42,7 +42,6 @@ class IRSendController : rtos::task<> {
         NewMessageFlag(this, "NewMessageFlag"),
         RepeatFlag(this, "RepeatFlag"),
         SignalTimer(this, "SignalTimer") {
-    cout << "AJA" << endl;
     ir_led.write(0);
   }
 
