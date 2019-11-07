@@ -121,6 +121,7 @@ void MainController::main() {
           runCommand(command);
           if (info.getHealthPoints() <= 0) {
 			hwlib::wait_ms(1000);
+			buzzer.write(0);
             state = states::WAIT_FOR_PC;
           }
         }
@@ -130,12 +131,14 @@ void MainController::main() {
           if (info.getTime() <= 0) {
             window.update(0);
             hwlib::wait_ms(350);
+			buzzer.write(0);
             state = states::WAIT_FOR_PC;
           }
         }
         break;
       }  // case (states::WAIT_FOR_COMMAND)
       case (states::WAIT_FOR_PC): {
+		
         char keyboard_input;
         hwlib::cin >> keyboard_input;
         if (keyboard_input == 111) {
