@@ -25,12 +25,13 @@ void MainController::runCommand(StructData command) {
       int damage = calculateDamage(data);
       int health = info.getHealthPoints();
       health -= damage;
-      if (health < 0) {
-				cout << "health below 0" << endl;
+      if (health <= 0) {
         health = 0;
+		info.setTime(0);
       }
       info.setHealthPoints(health);
       window.update(2);
+	  window.update(0);
     }
   } else if (command.to_change == 3) {  // change weapon
     info.setWeapon(command.data);
@@ -119,7 +120,7 @@ void MainController::main() {
           StructData command = CommandChannel.read();
           runCommand(command);
           if (info.getHealthPoints() <= 0) {
-						info.setTime(0);
+			hwlib::wait_ms(1000);
             state = states::WAIT_FOR_PC;
           }
         }

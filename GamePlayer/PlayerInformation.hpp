@@ -103,7 +103,7 @@ class PlayerInformation {
       std::array<uint8_t, 2> shot = playerInformation.hits[i];
       player_points[shot[0]-1] += shot[1]+1;
     }
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < 9; i++){
       out << "  Speler " << i+1 << " heeft in totaal " << player_points[i] << " damage gedaan!\n";
     }
     out << "=========================================";
