@@ -21,15 +21,15 @@ class KeyboardListener {
 ///\details
 /// KeyboardController gets the keypresses and gives to MainController
 class KeyboardController {
-  hwlib::target::pin_oc out0 = hwlib::target::pin_oc(hwlib::target::pins::d7);
-  hwlib::target::pin_oc out1 = hwlib::target::pin_oc(hwlib::target::pins::d8);
-  hwlib::target::pin_oc out2 = hwlib::target::pin_oc(hwlib::target::pins::d9);
-  hwlib::target::pin_oc out3 = hwlib::target::pin_oc(hwlib::target::pins::d10);
+  hwlib::target::pin_oc out0 = hwlib::target::pin_oc(hwlib::target::pins::d45);
+  hwlib::target::pin_oc out1 = hwlib::target::pin_oc(hwlib::target::pins::d43);
+  hwlib::target::pin_oc out2 = hwlib::target::pin_oc(hwlib::target::pins::d41);
+  hwlib::target::pin_oc out3 = hwlib::target::pin_oc(hwlib::target::pins::d39);
 
-  hwlib::target::pin_in in0  = hwlib::target::pin_in(hwlib::target::pins::d3);
-  hwlib::target::pin_in in1  = hwlib::target::pin_in(hwlib::target::pins::d4);
-  hwlib::target::pin_in in2  = hwlib::target::pin_in(hwlib::target::pins::d5);
-  hwlib::target::pin_in in3  = hwlib::target::pin_in(hwlib::target::pins::d6);
+  hwlib::target::pin_in in0  = hwlib::target::pin_in(hwlib::target::pins::d53);
+  hwlib::target::pin_in in1  = hwlib::target::pin_in(hwlib::target::pins::d51);
+  hwlib::target::pin_in in2  = hwlib::target::pin_in(hwlib::target::pins::d49);
+  hwlib::target::pin_in in3  = hwlib::target::pin_in(hwlib::target::pins::d47);
   
   hwlib::port_oc_from_pins_t out_port = hwlib::port_oc_from_pins_t(out0, out1, out2, out3);
   hwlib::port_in_from_pins_t in_port  = hwlib::port_in_from_pins_t(in0, in1, in2, in3);
