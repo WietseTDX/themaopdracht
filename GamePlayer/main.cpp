@@ -12,7 +12,7 @@ int main() {
     InputHandler a = InputHandler();
     MainController b = MainController(a, oled);
 
-    hwlib::target::pins receive = hwlib::target::pins::d22;
+    hwlib::target::pins receive = hwlib::target::pins::d35;
     IRReceiveController ir_receive = IRReceiveController(receive, b);
 
     rtos::run();
