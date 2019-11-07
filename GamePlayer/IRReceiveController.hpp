@@ -69,7 +69,7 @@ class IRReceiveController : public rtos::task<> {
   ///\details
   /// This function returns a IRReceiveController
   IRReceiveController(due::pins sensor, MainController &main_c)
-      : task("Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){};
+      : task(2, "Receiver"), sensor(due::pin_in(sensor)), main_c(main_c){hwlib::cout << "Ik ben in klasse IRReceive\n";};
 
   ///\brief
   /// main rtos

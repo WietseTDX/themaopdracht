@@ -29,7 +29,6 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
 
   WindowController window;
   IRSendController IrSend;
-  InputHandler handler;
 
   int count_down;
   bool shot = false;
@@ -72,7 +71,7 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
   /// \details
   /// To initiate the the rtos objects and fill the button in the button handeler
   MainController(InputHandler &handler, hwlib::window &w)
-      : task("MainController"),
+      : task(250, "MainController"),
         ButtonPressedFlag(this, "ButtonPressedFlag"),
         ButtonIDPool("ButtonIDPool"),
         CommandChannel(this, "CommandChannel"),
@@ -80,7 +79,10 @@ class MainController : public rtos::task<>, public KeyboardListener, public Butt
         BeenShotTimer(this, "BeenShotTimer"),
         BuzzerTimer(this, "BuzzerTimer"),
         PeriodFlag(this, 1000000, "PeriodFlag"),
-        window(w, info) {
+        window(w, info),
+        IrSend()
+        {
+          hwlib::cout << "Ik ben in klasse MainController\n";
     handler.addKeyboard(&keyboard);
     handler.addButton(&button);
     keyboard.addKeyboardListener(this);

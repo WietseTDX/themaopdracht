@@ -22,7 +22,7 @@ class InputHandler : public rtos::task<> {
   /// Constructor
   /// \details
   /// initiate all the rtos objects
-  InputHandler() : task("InputHandler"), PeriodFlag(this, 100000, "PeriodFlag") {}
+  InputHandler() : task(500,"InputHandler"), PeriodFlag(this, 100000, "PeriodFlag") {hwlib::cout << "Ik ben in klasse InputHandler\n";}
 
   /// \brief
   /// Add a button object

@@ -2,7 +2,7 @@
 #define WINDOWCONTROLLER_HPP
 
 #include "hwlib.hpp"
-#include "rtos.hpp"
+#include "../../rtos/rtos.hpp"
 
 #include "PlayerInformation.hpp"
 
@@ -33,6 +33,7 @@ private:
 
 public:
     WindowController(hwlib::window & window, PlayerInformation<100> & info):
+    task(999, "WindowController"),
     window(window),
     info(info),
     time_window(hwlib::window_part_t(window, hwlib::xy(0,0), hwlib::xy(80, 17))),
@@ -41,6 +42,7 @@ public:
     weapon_window(hwlib::window_part_t(window, hwlib::xy(65,18), hwlib::xy(127, 63))),
     WindowChannel(this, "WindowChannel")
     {
+        hwlib::cout << "Ik ben in klasse Window\n";
         window.clear();
         for (int i=0; i<4; i++) {
 			update(i);

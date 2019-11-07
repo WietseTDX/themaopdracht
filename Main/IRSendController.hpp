@@ -56,13 +56,13 @@ class IRSendController : rtos::task<> {
   /// The constructor has no parameters.
   /// Call Example: auto sender = IRSendController();
   IRSendController()
-      : task("IR-SendController"),
+      : task(1, "IR-SendController"),
         ir_led(PinPWMD2<38000, 2>()),
         PlayerPool("PlayerPool"),
         DataPool("DataPool"),
         NewMessageFlag(this, "NewMessageFlag"),
         RepeatFlag(this, "RepeatFlag"),
-        SignalTimer(this, "SignalTimer") {
+        SignalTimer(this, "SignalTimer") { hwlib::cout << "Ik ben in klasse IRSEND\n";
     ir_led.write(0);
   }
 
