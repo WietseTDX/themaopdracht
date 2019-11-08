@@ -136,7 +136,8 @@ void IRReceiveController::main() {
             bitcount++;
           } else if (bitcount != 16) {
             resettime = hwlib::now_us() - start_low;
-            if (resettime > 4000) {
+            if (resettime > 4000 + offset) {
+            cout << "B";
               high_time = 0;
               signal_high = false;
               state = states::IDLE;

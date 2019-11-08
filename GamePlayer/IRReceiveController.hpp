@@ -26,7 +26,7 @@ class IRReceiveController : public rtos::task<> {
   int start_high;
   int start_low;
   int resettime;
-  int offset = 200;
+  int offset = 250;
   int one_high_time = 1600;
   int zero_high_time = 800;
   int bitcount = 0;
